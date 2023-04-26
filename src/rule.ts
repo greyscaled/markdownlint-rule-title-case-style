@@ -3,7 +3,7 @@ import sentenceCase from "./sentenceCase"
 
 const rule: Rule = {
     names: ["title-case-style"],
-    description: "Todo",
+    description: "Enforces case style in titles",
     tags: ["headers", "headings"],
     function: (params: RuleParams, onError: RuleOnError): void => {
         forEachHeading(params, (token) => {
