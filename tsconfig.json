@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "declaration": false,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "outDir": "dist",
+        "removeComments": true,
+        "strict": true,
+        "target": "ES6"
+    },
+    "include": ["./src/rule.ts"]
+}

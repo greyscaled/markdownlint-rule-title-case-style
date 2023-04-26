@@ -1,20 +1,35 @@
 {
-  "name": "markdownlint-rule-titlecase",
-  "version": "0.1.0",
-  "description": "A custom markdownlint rule for checking title case headings",
-  "main": "rule.js",
-  "author": "Anthony Shaw",
-  "homepage": "https://github.com/tonybaloney/markdownlint-rule-titlecase",
-  "license": "MIT",
-  "keywords": [
-    "markdownlint-rule"
-  ],
-  "private": false,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "markdownlint-rule-helpers": "^0.7.0",
-    "title-case": "^3.0.2"
-  }
+    "name": "markdownlint-rule-title-case-style",
+    "version": "0.0.0",
+    "description": "A custom markdownlint rule for enforcing a case style in titles",
+    "keywords": [
+        "markdownlint-rule"
+    ],
+    "homepage": "https://github.com/greyscaled/markdownlint-rule-title-case-style",
+    "bugs": {
+        "url": "https://github.com/greyscaled/markdownlint-rule-title-case-style/issues"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Grey Barkans",
+        "url": "https://github.com/greyscaled"
+    },
+    "main": "rule.js",
+    "repository": "github:greyscaled/markdownlint-rule-title-case-style",
+    "scripts": {
+        "build": "tsc",
+        "check:all": "yarn format:check && yarn test",
+        "format:check": "prettier --check .",
+        "test": "jest"
+    },
+    "dependencies": {
+        "markdownlint": "^0.28.1"
+    },
+    "devDependencies": {
+        "@types/jest": "^29.5.1",
+        "jest": "^29.5.0",
+        "prettier": "^2.8.8",
+        "ts-jest": "^29.1.0",
+        "typescript": "^5.0.4"
+    }
 }
