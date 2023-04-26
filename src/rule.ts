@@ -20,7 +20,7 @@ const rule: Rule = {
         })
     },
 }
-
+module.exports = rule
 export default rule
 
 const forEachHeading = (params: RuleParams, fn: (token: MarkdownItToken) => void): void => {
