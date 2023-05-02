@@ -1,6 +1,6 @@
 {
     "name": "markdownlint-rule-title-case-style",
-    "version": "0.0.2",
+    "version": "0.1.0",
     "description": "A custom markdownlint rule for enforcing a case style in titles",
     "keywords": [
         "markdownlint-rule"
