@@ -33,15 +33,11 @@ For more information, refer to the [rule documentation].
 ```json
 {
   "title-case-style": {
-    "case": "<case-style>"
+    "case": "sentence",
+    "ignore": ["SQL"]
   }
 }
 ```
-
-Where `<case-style>` is one of:
-
-- "sentence" (default)
-- "title"
 
 [rule documentation]:
   https://github.com/greyscaled/markdownlint-rule-title-case-style/blob/main/docs/rules/title-case-style.md
