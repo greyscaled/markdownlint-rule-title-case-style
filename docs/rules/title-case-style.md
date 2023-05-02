@@ -9,7 +9,8 @@ Enforce a consistent case style for markdown titles.
 ```json
 {
   "title-case-style": {
-    "case": "<case-style>"
+    "case": "<case-style>",
+    "ignore": ["<ignore-list>"],
   }
 }
 ```
@@ -18,6 +19,8 @@ Where `<case-style>` is one of:
 
 - "sentence" (default)
 - "title"
+
+and `<ignore-list>` is an array of strings to ignore.
 
 ## Examples
 
@@ -47,4 +50,10 @@ For `"case": "title"`
 
 ```md
 # Goodbye World
+```
+
+For `"case": "sentence"` and `"ignore": ["SQL]`
+
+```md
+# Check out these SQL commands
 ```
