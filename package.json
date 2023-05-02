@@ -18,8 +18,8 @@
     "repository": "github:greyscaled/markdownlint-rule-title-case-style",
     "scripts": {
         "build": "tsc",
-        "check:all": "yarn format:check && yarn lint && yarn lint:md && yarn test",
-        "format:check": "prettier --check .",
+        "check:all": "yarn format && yarn lint && yarn lint:md && yarn test",
+        "format": "prettier --check .",
         "format:fix": "prettier --write .",
         "lint": "eslint .",
         "lint:md": "markdownlint .",
