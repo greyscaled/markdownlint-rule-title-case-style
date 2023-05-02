@@ -2,7 +2,7 @@
 
 ## Rule details
 
-Enforce a consisten case style for titles.
+Enforce a consistent case style for markdown titles.
 
 ## Configuration
 
