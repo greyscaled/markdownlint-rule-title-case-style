@@ -1,4 +1,5 @@
 import { MarkdownItToken, Rule, RuleOnError, RuleParams } from "markdownlint"
+import stripIgnoredWords, { withIgnored } from "./stripIgnoredWords"
 import sentenceCase from "./sentenceCase"
 import { titleCase } from "title-case"
 
@@ -15,24 +16,42 @@ const rule: Rule = {
     function: (params: RuleParams, onError: RuleOnError): void => {
         forEachHeading(params, (token) => {
             let expected: string
+            let parsedContent = token.content
+            let ignoredIndicies: number[] = []
 
-            if (params.config.case === "" || params.config.case === CaseSentence) {
-                expected = sentenceCase(token.content)
+            if (params.config.ignore) {
+                if (Array.isArray(params.config.ignore)) {
+                    const stripped = stripIgnoredWords(token.content, params.config.ignore)
+                    parsedContent = stripped.value
+                    ignoredIndicies = [...stripped.ignoredIndicies]
+                } else {
+                    throw new Error(
+                        `title-case-style: unrecognized config.ignore. Expected: an array of strings; Actual: ${params.config.ignore}`
+                    )
+                }
+            }
+
+            if (!params.config.case || params.config.case === CaseSentence) {
+                expected = sentenceCase(parsedContent)
             } else if (params.config.case === CaseTitle) {
-                expected = titleCase(token.content)
+                expected = titleCase(parsedContent)
             } else {
                 console.info(
                     `title-case-style: unrecognized config.case. Expected: "sentence","title"; Actual: ${params.config.case}. Defaulting to "sentence".`
                 )
-                expected = sentenceCase(token.content)
+                expected = sentenceCase(parsedContent)
             }
 
-            if (expected === token.content) {
+            if (expected === parsedContent) {
                 return
             }
 
             onError({
-                detail: `Expected: ${expected}; Actual: ${token.content}`,
+                detail: `Expected: ${withIgnored(
+                    token.content,
+                    expected,
+                    ignoredIndicies
+                )}; Actual: ${token.content}`,
                 lineNumber: token.lineNumber,
             })
         })
