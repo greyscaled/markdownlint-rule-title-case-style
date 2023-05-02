@@ -40,6 +40,20 @@ if [ -z "$isGitUpdated" ]; then
   exit 1
 fi
 
+# Check working directory is clean
+if [[ $(git diff --stat) != '' ]]; then
+  echo "working directy is not clean"
+  git diff --stat
+  exit 1
+fi
+
+# Ensure on main branch
+if [[ $(git branch --show-current) != 'main' ]]; then
+  echo "not on main branch"
+  git branch --show-current
+  exit 1
+fi
+
 ./scripts/build.sh
 cd dist || exit 1
 npm publish
