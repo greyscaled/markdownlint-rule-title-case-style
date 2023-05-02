@@ -26,7 +26,8 @@
         "test": "jest"
     },
     "dependencies": {
-        "markdownlint": "^0.28.1"
+        "markdownlint": "^0.28.1",
+        "title-case": "^3.0.3"
     },
     "devDependencies": {
         "@types/jest": "^29.5.1",

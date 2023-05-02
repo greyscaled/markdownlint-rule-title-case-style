@@ -2,8 +2,20 @@ import markdownlint from "markdownlint"
 import rule from "./rule"
 
 describe("rule", () => {
-    test("Ok", () => {
-        const testCase = `# Hello world
+    describe("Defaults", () => {
+        test("Ok", () => {
+            const testCase = `# Hello world\n`
+            const results = markdownlint.sync({
+                customRules: [rule],
+                strings: { testCase },
+            })
+            expect(results.testCase).toHaveLength(0)
+        })
+    })
+
+    describe("Sentence case", () => {
+        test("Ok", () => {
+            const testCase = `# Hello world
 
 ## Lorum ipsum
 
@@ -11,20 +23,73 @@ describe("rule", () => {
 
 #### CAPS-Caps lowercase lowercase
 `
-        const results = markdownlint.sync({
-            customRules: [rule],
-            strings: { testCase },
+            const results = markdownlint.sync({
+                customRules: [rule],
+                config: {
+                    "title-case-style": {
+                        case: "sentence",
+                    },
+                },
+                strings: { testCase },
+            })
+            expect(results.testCase).toHaveLength(0)
         })
-        expect(results.testCase).toHaveLength(0)
+
+        test("CatchTitleCase", () => {
+            const testCase = `# Hello World\n`
+            const results = markdownlint.sync({
+                customRules: [rule],
+                config: {
+                    "title-case-style": {
+                        case: "sentence",
+                    },
+                },
+                strings: { testCase },
+            })
+            expect(results.testCase).toHaveLength(1)
+            expect(results.testCase[0].errorDetail).toBe(
+                "Expected: Hello world; Actual: Hello World"
+            )
+        })
     })
 
-    test("CatchTitleCase", () => {
-        const testCase = `# Hello World\n`
-        const results = markdownlint.sync({
-            customRules: [rule],
-            strings: { testCase },
+    describe("Title case", () => {
+        test("Ok", () => {
+            const testCase = `# Hello World
+
+## Lorum Ipsum
+
+### Something Something Something
+
+#### CAPS-Caps Uppercase Uppercase
+`
+            const results = markdownlint.sync({
+                customRules: [rule],
+                config: {
+                    "title-case-style": {
+                        case: "title",
+                    },
+                },
+                strings: { testCase },
+            })
+            expect(results.testCase).toHaveLength(0)
         })
-        expect(results.testCase).toHaveLength(1)
-        expect(results.testCase[0].errorDetail).toBe("Expected: Hello world; Actual: Hello World")
+
+        test("CatchSentenceCase", () => {
+            const testCase = `# Hello world\n`
+            const results = markdownlint.sync({
+                customRules: [rule],
+                config: {
+                    "title-case-style": {
+                        case: "title",
+                    },
+                },
+                strings: { testCase },
+            })
+            expect(results.testCase).toHaveLength(1)
+            expect(results.testCase[0].errorDetail).toBe(
+                "Expected: Hello World; Actual: Hello world"
+            )
+        })
     })
 })
