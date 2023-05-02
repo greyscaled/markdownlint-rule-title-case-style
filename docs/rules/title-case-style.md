@@ -10,7 +10,7 @@ Enforce a consistent case style for markdown titles.
 {
   "title-case-style": {
     "case": "<case-style>",
-    "ignore": ["<ignore-list>"],
+    "ignore": ["<ignore-list>"]
   }
 }
 ```
