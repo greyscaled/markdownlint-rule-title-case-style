@@ -8,9 +8,9 @@ Enforce a consisten case style for titles.
 
 ```json
 {
-    "title-case-style": {
-        "case": "<case-style>"
-    }
+  "title-case-style": {
+    "case": "<case-style>"
+  }
 }
 ```
 
