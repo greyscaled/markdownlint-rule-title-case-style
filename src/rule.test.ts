@@ -13,7 +13,7 @@ some content
 
 ### 11. Eleven
 
-#### 44. Fourty four
+#### 44. Fourty four, thirty three
 
 ## Have questions?
 `
@@ -30,7 +30,7 @@ some content
 
 ### 11. Eleven
 
-#### 44. Fourty Four
+#### 44. Fourty Four, Thirty Three
 
 ## Have Questions?
 `
@@ -96,6 +96,19 @@ describe("markdownlint-rule-title-case-style", () => {
         const results = lint(testCase, { ignore: ["SQL"] })
         expect(results.testCase).toHaveLength(0)
     })
+    test("IgnoreWithCommas", () => {
+        const testCase = "# A, B, C and D\n"
+        const results = lint(testCase, { ignore: ["A", "B", "C", "D"] })
+        expect(results.testCase).toHaveLength(0)
+    })
+    test("IgnoreWithCommasCatchesCase", () => {
+        const testCase = "# A, B, C, D and E\n"
+        const results = lint(testCase, { ignore: ["A", "B"] })
+        expect(results.testCase).toHaveLength(1)
+        expect(results.testCase[0].errorDetail).toBe(
+            "Expected: A, B, c, d and e; Actual: A, B, C, D and E"
+        )
+    })
 
     // Reporting
     test("ErrorReportWithNumberedList", () => {
@@ -103,5 +116,13 @@ describe("markdownlint-rule-title-case-style", () => {
         const results = lint(testCase)
         expect(results.testCase).toHaveLength(1)
         expect(results.testCase[0].errorDetail).toBe("Expected: 1. Some list; Actual: 1. Some List")
+    })
+    test("ErrorReportWithCommas", () => {
+        const testCase = "# Hello, World and Goodbye, Cruel World\n"
+        const results = lint(testCase)
+        expect(results.testCase).toHaveLength(1)
+        expect(results.testCase[0].errorDetail).toBe(
+            "Expected: Hello, world and goodbye, cruel world; Actual: Hello, World and Goodbye, Cruel World"
+        )
     })
 })
