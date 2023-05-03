@@ -10,6 +10,12 @@ some content
 ### 1. SQL standards
 
 ### 2. PostgreSQL-SQL standards
+
+### 11. Eleven
+
+#### 44. Fourty four
+
+## Have questions?
 `
 
 const testCaseTitleCase = `# Hello World
@@ -21,6 +27,12 @@ some content
 ### 1. SQL Standards
 
 ### 2. PostgreSQL-SQL Standards
+
+### 11. Eleven
+
+#### 44. Fourty Four
+
+## Have Questions?
 `
 
 interface Options {
