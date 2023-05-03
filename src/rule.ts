@@ -3,6 +3,7 @@ import { titleCase } from "title-case"
 import sentenceCase from "./sentenceCase"
 import stripIgnoredWords, { withIgnored } from "./stripIgnoredWords"
 import stripLead from "./stripLead"
+import stripPunctuation from "./stripPunctuation"
 
 const CaseSentence = "sentence"
 const CaseTitle = "title"
@@ -17,20 +18,18 @@ const rule: Rule = {
     function: (params: RuleParams, onError: RuleOnError): void => {
         forEachHeading(params, (token) => {
             const strippedLead = stripLead(token.content)
-            let strippedContent = strippedLead.value
+            const strippedPunctuation = stripPunctuation(strippedLead.value)
+
+            let withoutIgnoredWords = strippedPunctuation.value
             let ignoredIndicies: number[] = []
-
-            // Strip ending punctuation
-            const endingPunctuation = strippedContent[strippedContent.length - 1]
-            if ([".", "?", "!"].includes(endingPunctuation)) {
-                strippedContent = strippedContent.slice(0, strippedContent.length - 1)
-            }
-
             if (params.config.ignore) {
                 if (Array.isArray(params.config.ignore)) {
-                    const stripped = stripIgnoredWords(strippedContent, params.config.ignore)
-                    strippedContent = stripped.value
-                    ignoredIndicies = [...stripped.ignoredIndicies]
+                    const ignoredResult = stripIgnoredWords(
+                        withoutIgnoredWords,
+                        params.config.ignore
+                    )
+                    withoutIgnoredWords = ignoredResult.value
+                    ignoredIndicies = [...ignoredResult.ignoredIndicies]
                 } else {
                     throw new Error(
                         `title-case-style: unrecognized config.ignore. Expected: an array of strings; Actual: ${params.config.ignore}`
@@ -40,17 +39,17 @@ const rule: Rule = {
 
             let expected: string
             if (!params.config.case || params.config.case === CaseSentence) {
-                expected = sentenceCase(strippedContent)
+                expected = sentenceCase(withoutIgnoredWords)
             } else if (params.config.case === CaseTitle) {
-                expected = titleCase(strippedContent)
+                expected = titleCase(withoutIgnoredWords)
             } else {
                 console.info(
                     `title-case-style: unrecognized config.case. Expected: "sentence","title"; Actual: ${params.config.case}. Defaulting to "sentence".`
                 )
-                expected = sentenceCase(strippedContent)
+                expected = sentenceCase(withoutIgnoredWords)
             }
 
-            if (expected === strippedContent) {
+            if (expected === withoutIgnoredWords) {
                 return
             }
 
@@ -59,7 +58,7 @@ const rule: Rule = {
                     strippedLead.value,
                     expected,
                     ignoredIndicies
-                )}; Actual: ${token.content}`,
+                )}${strippedPunctuation.stripped}; Actual: ${token.content}`,
                 lineNumber: token.lineNumber,
             })
         })

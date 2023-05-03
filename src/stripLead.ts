@@ -1,4 +1,9 @@
-const stripLead = (str: string): { value: string; stripped: string } => {
+export interface StripLead {
+    value: string
+    stripped: string
+}
+
+const stripLead = (str: string): StripLead => {
     const re = /^\d+\.\s+/
 
     let result = str

@@ -125,4 +125,16 @@ describe("markdownlint-rule-title-case-style", () => {
             "Expected: Hello, world and goodbye, cruel world; Actual: Hello, World and Goodbye, Cruel World"
         )
     })
+    test("ErrorReportWithPunctuation", () => {
+        const testCase = "# Hello World!\n"
+        const results = markdownlint.sync({
+            customRules: [rule],
+            config: {
+                MD026: false,
+            },
+            strings: { testCase: testCase },
+        })
+        expect(results.testCase).toHaveLength(1)
+        expect(results.testCase[0].errorDetail).toBe("Expected: Hello world!; Actual: Hello World!")
+    })
 })
