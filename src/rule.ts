@@ -1,7 +1,8 @@
 import { MarkdownItToken, Rule, RuleOnError, RuleParams } from "markdownlint"
-import stripIgnoredWords, { withIgnored } from "./stripIgnoredWords"
-import sentenceCase from "./sentenceCase"
 import { titleCase } from "title-case"
+import sentenceCase from "./sentenceCase"
+import stripIgnoredWords, { withIgnored } from "./stripIgnoredWords"
+import stripLead from "./stripLead"
 
 const CaseSentence = "sentence"
 const CaseTitle = "title"
@@ -15,14 +16,20 @@ const rule: Rule = {
     tags: ["headers", "headings"],
     function: (params: RuleParams, onError: RuleOnError): void => {
         forEachHeading(params, (token) => {
-            let expected: string
-            let parsedContent = token.content
+            const strippedLead = stripLead(token.content)
+            let strippedContent = strippedLead.value
             let ignoredIndicies: number[] = []
+
+            // Strip ending punctuation
+            const endingPunctuation = strippedContent[strippedContent.length - 1]
+            if ([".", "?", "!"].includes(endingPunctuation)) {
+                strippedContent = strippedContent.slice(0, strippedContent.length - 1)
+            }
 
             if (params.config.ignore) {
                 if (Array.isArray(params.config.ignore)) {
-                    const stripped = stripIgnoredWords(token.content, params.config.ignore)
-                    parsedContent = stripped.value
+                    const stripped = stripIgnoredWords(strippedContent, params.config.ignore)
+                    strippedContent = stripped.value
                     ignoredIndicies = [...stripped.ignoredIndicies]
                 } else {
                     throw new Error(
@@ -31,24 +38,25 @@ const rule: Rule = {
                 }
             }
 
+            let expected: string
             if (!params.config.case || params.config.case === CaseSentence) {
-                expected = sentenceCase(parsedContent)
+                expected = sentenceCase(strippedContent)
             } else if (params.config.case === CaseTitle) {
-                expected = titleCase(parsedContent)
+                expected = titleCase(strippedContent)
             } else {
                 console.info(
                     `title-case-style: unrecognized config.case. Expected: "sentence","title"; Actual: ${params.config.case}. Defaulting to "sentence".`
                 )
-                expected = sentenceCase(parsedContent)
+                expected = sentenceCase(strippedContent)
             }
 
-            if (expected === parsedContent) {
+            if (expected === strippedContent) {
                 return
             }
 
             onError({
-                detail: `Expected: ${withIgnored(
-                    token.content,
+                detail: `Expected: ${strippedLead.stripped}${withIgnored(
+                    strippedLead.value,
                     expected,
                     ignoredIndicies
                 )}; Actual: ${token.content}`,
