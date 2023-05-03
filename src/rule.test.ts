@@ -1,139 +1,95 @@
 import markdownlint from "markdownlint"
 import rule from "./rule"
 
-describe("rule", () => {
-    describe("Sentence case", () => {
-        test("Ok", () => {
-            const testCase = `# Hello world
+const testCaseSentenceCase = `# Hello world
 
-## Lorum ipsum
+some content
 
-### Something something something
+## Standards
 
-#### CAPS-Caps lowercase lowercase
+### 1. SQL standards
+
+### 2. PostgreSQL-SQL standards
 `
-            const results = markdownlint.sync({
-                customRules: [rule],
-                config: {
-                    "title-case-style": {
-                        case: "sentence",
-                    },
-                },
-                strings: { testCase },
-            })
-            expect(results.testCase).toHaveLength(0)
-        })
 
-        test("CatchTitleCase", () => {
-            const testCase = `# Hello World\n`
-            const results = markdownlint.sync({
-                customRules: [rule],
-                config: {
-                    "title-case-style": {
-                        case: "sentence",
-                    },
-                },
-                strings: { testCase },
-            })
-            expect(results.testCase).toHaveLength(1)
-            expect(results.testCase[0].errorDetail).toBe(
-                "Expected: Hello world; Actual: Hello World"
-            )
-        })
+const testCaseTitleCase = `# Hello World
+
+some content
+
+## Standards
+
+### 1. SQL Standards
+
+### 2. PostgreSQL-SQL Standards
+`
+
+interface Options {
+    case?: "sentence" | "title"
+    ignore?: string[]
+}
+
+const lint = (testCase: string, options: Options = {}): markdownlint.LintResults => {
+    return markdownlint.sync({
+        customRules: [rule],
+        config: {
+            "title-case-style": {
+                ...options,
+            },
+        },
+        strings: { testCase: testCase },
+    })
+}
+
+describe("markdownlint-rule-title-case-style", () => {
+    // Sentence case
+    test("SentenceCase", () => {
+        const results = lint(testCaseSentenceCase)
+        expect(results.testCase).toHaveLength(0)
+    })
+    test("SentenceCaseCatchTitleCase", () => {
+        const testCase = "# Hello World\n"
+        const results = lint(testCase)
+        expect(results.testCase).toHaveLength(1)
+        expect(results.testCase[0].errorDetail).toBe("Expected: Hello world; Actual: Hello World")
     })
 
-    describe("Title case", () => {
-        test("Ok", () => {
-            const testCase = `# Hello World
-
-## Lorum Ipsum
-
-### Something Something Something
-
-#### CAPS-Caps Uppercase Uppercase
-`
-            const results = markdownlint.sync({
-                customRules: [rule],
-                config: {
-                    "title-case-style": {
-                        case: "title",
-                    },
-                },
-                strings: { testCase },
-            })
-            expect(results.testCase).toHaveLength(0)
-        })
-
-        test("CatchSentenceCase", () => {
-            const testCase = `# Hello world\n`
-            const results = markdownlint.sync({
-                customRules: [rule],
-                config: {
-                    "title-case-style": {
-                        case: "title",
-                    },
-                },
-                strings: { testCase },
-            })
-            expect(results.testCase).toHaveLength(1)
-            expect(results.testCase[0].errorDetail).toBe(
-                "Expected: Hello World; Actual: Hello world"
-            )
-        })
+    // Title case
+    test("TitleCase", () => {
+        const results = lint(testCaseTitleCase, { case: "title" })
+        expect(results.testCase).toHaveLength(0)
+    })
+    test("TitleCaseCatchSentenceCase", () => {
+        const testCase = "# Hello world\n"
+        const results = lint(testCase, { case: "title" })
+        expect(results.testCase).toHaveLength(1)
+        expect(results.testCase[0].errorDetail).toBe("Expected: Hello World; Actual: Hello world")
     })
 
-    describe("Configurations", () => {
-        test("DefaultSentenceCase", () => {
-            const testCase = `# Hello world\n`
-            const results = markdownlint.sync({
-                customRules: [rule],
-                strings: { testCase },
-            })
-            expect(results.testCase).toHaveLength(0)
-        })
+    // Ignore
+    test("Ignore", () => {
+        const testCase = "# Check out SQL\n"
+        const results = lint(testCase, { ignore: ["SQL"] })
+        expect(results.testCase).toHaveLength(0)
+    })
+    test("IgnoreCatchesCase", () => {
+        const testCase = "# Check Out SQL\n"
+        const results = lint(testCase, { ignore: ["SQL"] })
+        expect(results.testCase).toHaveLength(1)
+        expect(results.testCase[0].errorDetail).toBe(
+            "Expected: Check out SQL; Actual: Check Out SQL"
+        )
+    })
+    test("IgnoreLastWordPunctuated", () => {
+        const testCase = `# What is SQL?\n`
+        const results = lint(testCase, { ignore: ["SQL"] })
+        expect(results.testCase).toHaveLength(0)
+    })
 
-        test("ignoreWordsStillReportsErrors", () => {
-            const testCase = `# Check Out SQL\n`
-            const results = markdownlint.sync({
-                customRules: [rule],
-                config: {
-                    "title-case-style": {
-                        ignore: ["SQL"],
-                    },
-                },
-                strings: { testCase },
-            })
-            expect(results.testCase[0].errorDetail).toBe(
-                "Expected: Check out SQL; Actual: Check Out SQL"
-            )
-        })
-
-        test("ignoreWordsNotFirst", () => {
-            const testCase = `# Check out this SQL command from PostgreSQL\n`
-            const results = markdownlint.sync({
-                customRules: [rule],
-                config: {
-                    "title-case-style": {
-                        ignore: ["SQL", "PostgreSQL"],
-                    },
-                },
-                strings: { testCase },
-            })
-            expect(results.testCase).toHaveLength(0)
-        })
-
-        test("ignoreWordsFirst", () => {
-            const testCase = `# SQL command from PostgreSQL\n`
-            const results = markdownlint.sync({
-                customRules: [rule],
-                config: {
-                    "title-case-style": {
-                        ignore: ["SQL", "PostgreSQL"],
-                    },
-                },
-                strings: { testCase },
-            })
-            expect(results.testCase).toHaveLength(0)
-        })
+    // Reporting
+    test("ErrorReportWithNumberedList", () => {
+        const testCase = "# 1. Some List\n"
+        const results = lint(testCase)
+        expect(results.testCase).toHaveLength(1)
+        expect(results.testCase[0].errorDetail).toBe("Expected: 1. Some list; Actual: 1. Some List")
     })
 })
