@@ -5,7 +5,7 @@ Enforces case style in titles. Presently, the rule can:
 - enforce title or sentence case
 - ignore a list of words (example words that should be capitalized)
 - ignore leading lists (example: `### 1. Some heading`)
-- ignore ending punctuation
+- ignore ending punctuation and commas
 
 This tool is in an early stage and any other desired cases are welcomed as
 issues or pull requests.
