@@ -1,26 +1,23 @@
-const stripIgnoreWords = (
-    content: string,
-    ignoredWords: unknown[]
-): { value: string; ignoredIndicies: number[] } => {
-    let firstWordIgnored = false
+export interface StripIgnoreWords {
+    value: string
+    ignoredIndicies: number[]
+}
+
+const stripIgnoreWords = (content: string, ignoredWords: unknown[]): StripIgnoreWords => {
     const ignoredIndicies: number[] = []
 
-    for (const [idx, ignoredWord] of ignoredWords.entries()) {
+    for (const ignoredWord of ignoredWords) {
         if (typeof ignoredWord !== "string") {
             throw new Error(
                 `title-case-style: unexpected value in config.ignore. Expected: string; Actual: ${typeof ignoredWord}`
             )
-        }
-
-        if (idx === 0) {
-            firstWordIgnored = true
         }
     }
 
     const value = content
         .split(" ")
         .filter((word, idx) => {
-            if (firstWordIgnored && idx === 0) {
+            if (idx === 0) {
                 return true
             }
 
