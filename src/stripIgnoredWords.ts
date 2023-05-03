@@ -23,10 +23,14 @@ const stripIgnoreWords = (
             if (firstWordIgnored && idx === 0) {
                 return true
             }
-            if (ignoredWords.includes(word)) {
+
+            const withoutCommas = word.endsWith(",") ? word.slice(0, word.length - 1) : word
+
+            if (ignoredWords.includes(withoutCommas)) {
                 ignoredIndicies.push(idx)
                 return false
             }
+
             return true
         })
         .join(" ")
