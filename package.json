@@ -22,7 +22,7 @@
         "format": "prettier --check .",
         "format:fix": "prettier --write .",
         "lint": "eslint .",
-        "lint:md": "yarn build && markdownlint-cli2 \"**/*.{md,mdx}\" \"!node_modules\" \"!dist\"",
+        "lint:md": "yarn build && markdownlint-cli2 \"**/*.{md,mdx}\" \"!node_modules\" \"!dist\" \"!LICENSE\"",
         "test": "jest"
     },
     "dependencies": {
