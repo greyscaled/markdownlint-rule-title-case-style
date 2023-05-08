@@ -1,14 +1,16 @@
 # `markdownlint-rule-title-case-style`
 
-Enforces case style in titles. Presently, the rule can:
+Enforces case style in titles.
+
+## Features
 
 - enforce title or sentence case
 - ignore specified words
 - ignore leading lists (example: `### 1. Some heading`)
 - ignore ending punctuation and commas
 
-This tool is in an early stage. Bug reports and feature requests
-are encouraged. For more information see [CONTRIBUTING].
+This tool is in an early stage. Bug reports and feature requests are encouraged.
+For more information see [CONTRIBUTING].
 
 ## Usage
 
@@ -38,6 +40,8 @@ Add one of the supported configuration formats, example
 
 #### `markdownlint-cli`
 
+> **info**: It is recommended to use `markdownlint-cli-2`.
+
 ```console
 markdownlint --rules="markdownlint-rule-title-case-style"
 ```
@@ -51,7 +55,7 @@ markdownlint.sync({
   customRules: [titleCaseStyle],
   config: {
     "title-case-style": {
-      "ignore": ["SQL"]
+      ignore: ["SQL"],
     },
   },
 })
@@ -72,10 +76,11 @@ For more information, refer to the [rule documentation].
 
 ### Fix
 
-This rule can automatically fix violations
+This rule can automatically fix violations. For example with
+`markdownlint-cli-2`:
 
 ```console
-markdownlint-cli2-fix 
+markdownlint-cli2-fix
 ```
 
 ### Ignoring cases

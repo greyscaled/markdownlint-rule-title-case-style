@@ -1,8 +1,4 @@
-<!-- markdownlint-disable title-case-style -->
-
-# title-case-style
-
-<!-- markdownlint-enable title-case-style -->
+# `title-case-style`
 
 ## Rule details
 
@@ -30,34 +26,65 @@ and `<ignore-list>` is an array of strings to ignore.
 
 ### Incorrect 👎
 
-For `"case": "sentence"`
+- Sentence case
 
-```md
-# Hello World
-```
+  ```json
+  {
+    "case": "sentence"
+  }
+  ```
 
-For `"case": "title"`
+  ```md
+  # Hello World
+  ```
 
-```md
-# Goodbye world
-```
+- Title case
+
+  ```json
+  {
+    "case": "title"
+  }
+  ```
+
+  ```md
+  # Goodbye world
+  ```
 
 ### Correct 👍
 
-For `"case": "sentence"`
+- Sentence case
 
-```md
-# Hello world
-```
+  ```json
+  {
+    "case": "sentence"
+  }
+  ```
 
-For `"case": "title"`
+  ```md
+  # Hello world
+  ```
 
-```md
-# Goodbye World
-```
+- Title case
 
-For `"case": "sentence"` and `"ignore": ["SQL]`
+  ```json
+  {
+    "case": "title"
+  }
+  ```
 
-```md
-# Check out these SQL commands
-```
+  ```md
+  # Goodbye World
+  ```
+
+- Ignoring words
+
+  ```json
+  {
+    "case": "sentence",
+    "ignore": ["SQL"]
+  }
+  ```
+
+  ```md
+  # Check out these SQL commands
+  ```
