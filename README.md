@@ -10,6 +10,8 @@ Enforces case style in titles. Presently, the rule can:
 This tool is in an early stage and any other desired cases are welcomed as
 issues or pull requests.
 
+For more information see [CONTRIBUTING].
+
 ## Usage
 
 ### Install
@@ -76,5 +78,7 @@ wrap the lines as follows:
 <!-- markdownlint-enable title-case-style -->
 ```
 
+[CONTRIBUTING]:
+  https://github.com/greyscaled/markdownlint-rule-title-case-style/blob/main/.github/CONTRIBUTING.md
 [rule documentation]:
   https://github.com/greyscaled/markdownlint-rule-title-case-style/blob/main/docs/rules/title-case-style.md

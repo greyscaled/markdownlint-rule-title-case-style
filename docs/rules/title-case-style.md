@@ -1,4 +1,8 @@
+<!-- markdownlint-disable title-case-style -->
+
 # title-case-style
+
+<!-- markdownlint-enable title-case-style -->
 
 ## Rule details
 
