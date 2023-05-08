@@ -13,5 +13,6 @@
 yarn check:all
 rm -rf dist
 yarn build
+cp LICENSE dist
 cp package.json dist
 cp README.md dist
