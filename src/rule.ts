@@ -53,12 +53,22 @@ const rule: Rule = {
                 return
             }
 
+            const expectedInner = withIgnored(strippedLead.value, expected, ignoredIndicies)
+            const expectedFull = `${strippedLead.stripped}${expectedInner}${strippedPunctuation.stripped}`
+
             onError({
-                detail: `Expected: ${strippedLead.stripped}${withIgnored(
-                    strippedLead.value,
-                    expected,
-                    ignoredIndicies
-                )}${strippedPunctuation.stripped}; Actual: ${token.content}`,
+                detail: `Expected: ${expectedFull}; Actual: ${token.content}`,
+                fixInfo: {
+                    // The token should be in the form of <heading> <content>,
+                    // but technically there could be more leading whitespace.
+                    // To try and make the fix work, we use the token.content
+                    // to remove it from the leading <heading> (ie: '#')
+                    deleteCount: token.content.length,
+                    // editColumn is 1s based, hence the + 1
+                    editColumn: token.line.indexOf(token.content) + 1,
+                    insertText: expectedFull,
+                    lineNumber: token.lineNumber,
+                },
                 lineNumber: token.lineNumber,
             })
         })

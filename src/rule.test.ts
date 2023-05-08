@@ -52,6 +52,25 @@ const lint = (testCase: string, options: Options = {}): markdownlint.LintResults
     })
 }
 
+// This is ripped from `applyFix` in markdownlint helpers
+// https://github.com/DavidAnson/markdownlint/blob/main/helpers/helpers.js#L993
+const fix = (line: string, fixInfo: markdownlint.FixInfo): string | null => {
+    const editColumn = fixInfo.editColumn || 1
+    const deleteCount = fixInfo.deleteCount || 0
+    const insertText = fixInfo.insertText || ""
+    const editIndex = editColumn - 1
+
+    if (deleteCount < 0) {
+        return null
+    }
+
+    return (
+        line.slice(0, editIndex) +
+        insertText.replace(/\n/g, "\n") +
+        line.slice(editIndex + deleteCount)
+    )
+}
+
 describe("markdownlint-rule-title-case-style", () => {
     // Sentence case
     test("SentenceCase", () => {
@@ -136,5 +155,38 @@ describe("markdownlint-rule-title-case-style", () => {
         })
         expect(results.testCase).toHaveLength(1)
         expect(results.testCase[0].errorDetail).toBe("Expected: Hello world!; Actual: Hello World!")
+    })
+
+    // Autofix
+    test("AutoFixSentenceCase", () => {
+        // Given: title case
+        const testCase = "# Hello World\n"
+
+        // When: lint for sentence case
+        const before = lint(testCase, { case: "sentence" })
+        expect(before.testCase).toHaveLength(1)
+
+        // Then: fixInfo should be sentence case
+        const { fixInfo } = before.testCase[0]
+        expect(fixInfo).toBeDefined()
+        expect(fixInfo?.insertText).toBe("Hello world")
+
+        if (!fixInfo) {
+            throw new Error("fixInfo is null")
+        }
+
+        // When: the string is fixed
+        const testCaseFixed = fix(testCase, fixInfo)
+        expect(testCaseFixed).toBe("# Hello world\n")
+
+        if (!testCaseFixed) {
+            throw new Error("testCaseFixed is null or empty")
+        }
+
+        // When: lint the fixed string
+        const after = lint(testCaseFixed, { case: "sentence" })
+
+        // Then: there are no errors
+        expect(after.testCase).toHaveLength(0)
     })
 })
