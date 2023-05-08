@@ -40,7 +40,7 @@ Add one of the supported configuration formats, example
 
 #### `markdownlint-cli`
 
-> **info**: It is recommended to use `markdownlint-cli-2`.
+> It is recommended to use `markdownlint-cli2`.
 
 ```console
 markdownlint --rules="markdownlint-rule-title-case-style"
