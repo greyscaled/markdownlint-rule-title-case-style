@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: ""
+about: "Request a feature to help us improve"
 title: "Feat: "
 labels: ""
 assignees: ""
