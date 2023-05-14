@@ -1,6 +1,7 @@
 export interface StripIgnoreWords {
-    value: string
     ignoredIndicies: number[]
+    isFirstIgnored: boolean
+    value: string
 }
 
 const stripIgnoreWords = (content: string, ignoredWords: unknown[]): StripIgnoreWords => {
@@ -14,16 +15,17 @@ const stripIgnoreWords = (content: string, ignoredWords: unknown[]): StripIgnore
         }
     }
 
+    let isFirstIgnored = false
     const value = content
         .split(" ")
         .filter((word, idx) => {
-            if (idx === 0) {
-                return true
-            }
-
             const withoutCommas = word.endsWith(",") ? word.slice(0, word.length - 1) : word
 
             if (ignoredWords.includes(withoutCommas)) {
+                if (idx === 0) {
+                    isFirstIgnored = true
+                    return true
+                }
                 ignoredIndicies.push(idx)
                 return false
             }
@@ -31,7 +33,7 @@ const stripIgnoreWords = (content: string, ignoredWords: unknown[]): StripIgnore
             return true
         })
         .join(" ")
-    return { value, ignoredIndicies }
+    return { ignoredIndicies, isFirstIgnored, value }
 }
 
 export default stripIgnoreWords

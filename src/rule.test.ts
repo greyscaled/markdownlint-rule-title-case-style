@@ -128,6 +128,21 @@ describe("markdownlint-rule-title-case-style", () => {
             "Expected: A, B, c, d and e; Actual: A, B, C, D and E"
         )
     })
+    test("IgnoreLowercaseWordTitleCase", () => {
+        const testCase = "# Read company Blog\n"
+        const results = lint(testCase, { case: "title", ignore: ["company"] })
+        expect(results.testCase).toHaveLength(0)
+    })
+    test("IgnoreFirstWordSentenceCase", () => {
+        const testCase = "# company blog is really fun to read\n"
+        const results = lint(testCase, { case: "sentence", ignore: ["company"] })
+        expect(results.testCase).toHaveLength(0)
+    })
+    test("IgnoreFirstWordTitleCase", () => {
+        const testCase = "# company Blog Is Really Fun to Read\n"
+        const results = lint(testCase, { case: "title", ignore: ["company"] })
+        expect(results.testCase).toHaveLength(0)
+    })
 
     // Reporting
     test("ErrorReportWithNumberedList", () => {
@@ -155,6 +170,40 @@ describe("markdownlint-rule-title-case-style", () => {
         })
         expect(results.testCase).toHaveLength(1)
         expect(results.testCase[0].errorDetail).toBe("Expected: Hello world!; Actual: Hello World!")
+    })
+    test("ErrorReportWithFirstIgnoredSentenceCase", () => {
+        const testCase = "# company Blog is Great\n"
+        const results = markdownlint.sync({
+            config: {
+                "title-case-style": {
+                    case: "sentence",
+                    ignore: ["company"],
+                },
+            },
+            customRules: [rule],
+            strings: { testCase: testCase },
+        })
+        expect(results.testCase).toHaveLength(1)
+        expect(results.testCase[0].errorDetail).toBe(
+            "Expected: company blog is great; Actual: company Blog is Great"
+        )
+    })
+    test("ErrorReportWithFirstIgnoredTitleCase", () => {
+        const testCase = "# company blog is Great\n"
+        const results = markdownlint.sync({
+            config: {
+                "title-case-style": {
+                    case: "title",
+                    ignore: ["company"],
+                },
+            },
+            customRules: [rule],
+            strings: { testCase: testCase },
+        })
+        expect(results.testCase).toHaveLength(1)
+        expect(results.testCase[0].errorDetail).toBe(
+            "Expected: company Blog Is Great; Actual: company blog is Great"
+        )
     })
 
     // Autofix
