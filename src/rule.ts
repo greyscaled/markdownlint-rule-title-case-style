@@ -22,6 +22,7 @@ const rule: Rule = {
 
             let withoutIgnoredWords = strippedPunctuation.value
             let ignoredIndicies: number[] = []
+            let isFirstIgnored = false
             if (params.config.ignore) {
                 if (Array.isArray(params.config.ignore)) {
                     const ignoredResult = stripIgnoredWords(
@@ -30,6 +31,7 @@ const rule: Rule = {
                     )
                     withoutIgnoredWords = ignoredResult.value
                     ignoredIndicies = [...ignoredResult.ignoredIndicies]
+                    isFirstIgnored = ignoredResult.isFirstIgnored
                 } else {
                     throw new Error(
                         `title-case-style: unrecognized config.ignore. Expected: an array of strings; Actual: ${params.config.ignore}`
@@ -40,13 +42,18 @@ const rule: Rule = {
             let expected: string
             if (!params.config.case || params.config.case === CaseSentence) {
                 expected = sentenceCase(withoutIgnoredWords)
+                if (isFirstIgnored) {
+                    expected = strippedPunctuation.value[0] + expected.slice(1)
+                }
             } else if (params.config.case === CaseTitle) {
                 expected = titleCase(withoutIgnoredWords)
+                expected = strippedPunctuation.value[0] + expected.slice(1)
             } else {
                 console.info(
                     `title-case-style: unrecognized config.case. Expected: "sentence","title"; Actual: ${params.config.case}. Defaulting to "sentence".`
                 )
                 expected = sentenceCase(withoutIgnoredWords)
+                expected = strippedPunctuation.value[0] + expected.slice(1)
             }
 
             if (expected === withoutIgnoredWords) {
