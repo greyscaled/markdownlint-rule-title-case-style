@@ -189,4 +189,16 @@ describe("markdownlint-rule-title-case-style", () => {
         // Then: there are no errors
         expect(after.testCase).toHaveLength(0)
     })
+
+    // Code block
+    test("CodeBlockSentenceCase", () => {
+        const testCase = "# `toString()` method\n"
+        const results = lint(testCase, { case: "sentence" })
+        expect(results.testCase).toHaveLength(0)
+    })
+    test("CodeBlockTitleCase", () => {
+        const testCase = "# `toString()` Method\n"
+        const results = lint(testCase, { case: "title" })
+        expect(results.testCase).toHaveLength(0)
+    })
 })
