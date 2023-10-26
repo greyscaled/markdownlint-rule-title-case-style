@@ -1,31 +1,32 @@
 # `markdownlint-rule-title-case-style`
 
-Enforces case style in titles.
+This custom rule enforces consistent case styles in markdown titles. Supported
+options are:
 
-## Features
+- case: `"sentence"` or `"title"` (default: sentence)
+- ignore: a list of strings to ignore
 
-- enforce title or sentence case
-- ignore specified words
-- ignore leading lists (example: `### 1. Some heading`)
-- ignore ending punctuation and commas
+## Install
 
-This tool is in an early stage. Bug reports and feature requests are encouraged.
-For more information see [CONTRIBUTING].
-
-## Usage
-
-### Install
-
-```console
+```shell
 yarn add -D markdownlint-rule-title-case-style
 ```
+
+```shell
+npm --save-dev markdownlint-rule-title-case-style
+```
+
+This package is a peer/plugin to the `markdownlint` ecosystem and most cases
+will require installing [`markdownlint` or related packages], depending on your
+use case.
+
+## Usage
 
 ### Add the rule
 
 #### `markdownlint-cli2` (recommended)
 
-Add one of the supported configuration formats, example
-`.markdownlint-cli2.jsonc`:
+Add one of the [supported configuration formats], for example `.markdownlint-cli2.jsonc`:
 
 ```jsonc
 {
@@ -40,7 +41,8 @@ Add one of the supported configuration formats, example
 
 #### `markdownlint-cli`
 
-> It is recommended to use `markdownlint-cli2`.
+> It is recommended to use `markdownlint-cli2`, as it is written and actively
+> maintained by the maintainer of `markdownlint`.
 
 ```console
 markdownlint --rules="markdownlint-rule-title-case-style"
@@ -63,16 +65,21 @@ markdownlint.sync({
 
 ### Configuration
 
-For more information, refer to the [rule documentation].
-
-```json
+```jsonc
 {
   "title-case-style": {
-    "case": "sentence",
-    "ignore": ["SQL"]
+    "case": "<case-style>",
+    "ignore": ["<ignore-list>"]
   }
 }
 ```
+
+Where `<case-style>` is one of:
+
+- "sentence" (default)
+- "title"
+
+and `<ignore-list>` is an array of strings to ignore.
 
 ### Fix
 
@@ -83,7 +90,7 @@ This rule can automatically fix violations. For example with
 markdownlint-cli2-fix
 ```
 
-### Ignoring cases
+### Ignoring errors
 
 If there's a bug/incorrect report, or a case that shouldn't be enforced, simply
 wrap the lines as follows:
@@ -96,7 +103,12 @@ wrap the lines as follows:
 <!-- markdownlint-enable title-case-style -->
 ```
 
+## Issues and contributing
+
+This tool is in an early stage. Bug reports and feature requests are encouraged.
+For more information see [CONTRIBUTING].
+
+[`markdownlint` or related packages]: https://github.com/DavidAnson/markdownlint#related
+[supported configuration formats]: https://github.com/DavidAnson/markdownlint-cli2#configuration
 [CONTRIBUTING]:
   https://github.com/greyscaled/markdownlint-rule-title-case-style/blob/main/.github/CONTRIBUTING.md
-[rule documentation]:
-  https://github.com/greyscaled/markdownlint-rule-title-case-style/blob/main/docs/rules/title-case-style.md
