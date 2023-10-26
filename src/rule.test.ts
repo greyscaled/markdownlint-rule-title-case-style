@@ -1,3 +1,4 @@
+import { describe, expect, test } from "@jest/globals"
 import markdownlint from "markdownlint"
 import rule from "./rule"
 
@@ -107,7 +108,7 @@ describe("markdownlint-rule-title-case-style", () => {
         const results = lint(testCase, { ignore: ["SQL"] })
         expect(results.testCase).toHaveLength(1)
         expect(results.testCase[0].errorDetail).toBe(
-            "Expected: Check out SQL; Actual: Check Out SQL"
+            "Expected: Check out SQL; Actual: Check Out SQL",
         )
     })
     test("IgnoreLastWordPunctuated", () => {
@@ -125,7 +126,7 @@ describe("markdownlint-rule-title-case-style", () => {
         const results = lint(testCase, { ignore: ["A", "B"] })
         expect(results.testCase).toHaveLength(1)
         expect(results.testCase[0].errorDetail).toBe(
-            "Expected: A, B, c, d and e; Actual: A, B, C, D and E"
+            "Expected: A, B, c, d and e; Actual: A, B, C, D and E",
         )
     })
     test("IgnoreLowercaseWordTitleCase", () => {
@@ -156,7 +157,7 @@ describe("markdownlint-rule-title-case-style", () => {
         const results = lint(testCase)
         expect(results.testCase).toHaveLength(1)
         expect(results.testCase[0].errorDetail).toBe(
-            "Expected: Hello, world and goodbye, cruel world; Actual: Hello, World and Goodbye, Cruel World"
+            "Expected: Hello, world and goodbye, cruel world; Actual: Hello, World and Goodbye, Cruel World",
         )
     })
     test("ErrorReportWithPunctuation", () => {
@@ -185,7 +186,7 @@ describe("markdownlint-rule-title-case-style", () => {
         })
         expect(results.testCase).toHaveLength(1)
         expect(results.testCase[0].errorDetail).toBe(
-            "Expected: company blog is great; Actual: company Blog is Great"
+            "Expected: company blog is great; Actual: company Blog is Great",
         )
     })
     test("ErrorReportWithFirstIgnoredTitleCase", () => {
@@ -202,7 +203,7 @@ describe("markdownlint-rule-title-case-style", () => {
         })
         expect(results.testCase).toHaveLength(1)
         expect(results.testCase[0].errorDetail).toBe(
-            "Expected: company Blog Is Great; Actual: company blog is Great"
+            "Expected: company Blog Is Great; Actual: company blog is Great",
         )
     })
 

@@ -22,12 +22,12 @@ jobs:
             - name: Setup Node.js environment
               uses: actions/setup-node@v3
               with:
-                  node-version: 18
+                  node-version: 20
                   cache: "yarn"
                   cache-dependency-path: yarn.lock
 
             - name: yarn install
-              run: yarn install --frozen-lockfile
+              run: yarn install --immutable
 
             - name: yarn lint
               run: yarn lint
@@ -49,12 +49,12 @@ jobs:
             - name: Setup Node.js environment
               uses: actions/setup-node@v3
               with:
-                  node-version: 18
+                  node-version: 20
                   cache: "yarn"
                   cache-dependency-path: yarn.lock
 
             - name: yarn install
-              run: yarn install --frozen-lockfile
+              run: yarn install --immutable
 
             - name: yarn test
               run: yarn test

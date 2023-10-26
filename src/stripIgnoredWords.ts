@@ -10,7 +10,7 @@ const stripIgnoreWords = (content: string, ignoredWords: unknown[]): StripIgnore
     for (const ignoredWord of ignoredWords) {
         if (typeof ignoredWord !== "string") {
             throw new Error(
-                `title-case-style: unexpected value in config.ignore. Expected: string; Actual: ${typeof ignoredWord}`
+                `title-case-style: unexpected value in config.ignore. Expected: string; Actual: ${typeof ignoredWord}`,
             )
         }
     }
@@ -41,7 +41,7 @@ export default stripIgnoreWords
 export const withIgnored = (
     original: string,
     stripped: string,
-    ignoredIndicies: number[]
+    ignoredIndicies: number[],
 ): string => {
     const originalWords = original.split(" ")
     const strippedWords = stripped.split(" ")

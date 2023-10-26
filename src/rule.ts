@@ -1,9 +1,9 @@
 import { MarkdownItToken, Rule, RuleOnError, RuleParams } from "markdownlint"
 import { titleCase } from "title-case"
-import sentenceCase from "./sentenceCase"
-import stripIgnoredWords, { withIgnored } from "./stripIgnoredWords"
-import stripLead from "./stripLead"
-import stripPunctuation from "./stripPunctuation"
+import sentenceCase from "./sentenceCase.js"
+import stripIgnoredWords, { withIgnored } from "./stripIgnoredWords.js"
+import stripLead from "./stripLead.js"
+import stripPunctuation from "./stripPunctuation.js"
 
 const CaseSentence = "sentence"
 const CaseTitle = "title"
@@ -12,7 +12,7 @@ const rule: Rule = {
     names: ["title-case-style"],
     description: "Enforces case style in titles",
     information: new URL(
-        "https://github.com/greyscaled/markdownlint-rule-title-case-style/blob/main/docs/rules/title-case-style.md"
+        "https://github.com/greyscaled/markdownlint-rule-title-case-style/blob/main/docs/rules/title-case-style.md",
     ),
     tags: ["headers", "headings"],
     function: (params: RuleParams, onError: RuleOnError): void => {
@@ -27,14 +27,14 @@ const rule: Rule = {
                 if (Array.isArray(params.config.ignore)) {
                     const ignoredResult = stripIgnoredWords(
                         withoutIgnoredWords,
-                        params.config.ignore
+                        params.config.ignore,
                     )
                     withoutIgnoredWords = ignoredResult.value
                     ignoredIndicies = [...ignoredResult.ignoredIndicies]
                     isFirstIgnored = ignoredResult.isFirstIgnored
                 } else {
                     throw new Error(
-                        `title-case-style: unrecognized config.ignore. Expected: an array of strings; Actual: ${params.config.ignore}`
+                        `title-case-style: unrecognized config.ignore. Expected: an array of strings; Actual: ${params.config.ignore}`,
                     )
                 }
             }
@@ -50,7 +50,7 @@ const rule: Rule = {
                 expected = strippedPunctuation.value[0] + expected.slice(1)
             } else {
                 console.info(
-                    `title-case-style: unrecognized config.case. Expected: "sentence","title"; Actual: ${params.config.case}. Defaulting to "sentence".`
+                    `title-case-style: unrecognized config.case. Expected: "sentence","title"; Actual: ${params.config.case}. Defaulting to "sentence".`,
                 )
                 expected = sentenceCase(withoutIgnoredWords)
                 expected = strippedPunctuation.value[0] + expected.slice(1)
@@ -81,7 +81,6 @@ const rule: Rule = {
         })
     },
 }
-module.exports = rule
 export default rule
 
 const forEachHeading = (params: RuleParams, fn: (token: MarkdownItToken) => void): void => {

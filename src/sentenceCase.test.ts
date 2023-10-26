@@ -1,3 +1,4 @@
+import { describe, expect, test } from "@jest/globals"
 import sentenceCase from "./sentenceCase"
 
 describe("sentenceCase", () => {

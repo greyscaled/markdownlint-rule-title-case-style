@@ -4,12 +4,14 @@
         "declaration": false,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "module": "CommonJS",
-        "moduleResolution": "node",
+        "lib": [],
+        "module": "Node16",
+        "moduleResolution": "Node16",
         "outDir": "dist",
         "removeComments": true,
+        "skipLibCheck": true,
         "strict": true,
-        "target": "ES6"
+        "target": "ESNext"
     },
     "include": ["./src/rule.ts"]
 }
