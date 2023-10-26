@@ -1,6 +1,6 @@
 export interface StripPunctuation {
-    value: string
     stripped: string
+    value: string
 }
 
 const stripPunctuation = (str: string): StripPunctuation => {
@@ -9,14 +9,14 @@ const stripPunctuation = (str: string): StripPunctuation => {
 
     if (punctuation.includes(lastChar)) {
         return {
-            value: str.slice(0, str.length - 1),
             stripped: lastChar,
+            value: str.slice(0, str.length - 1),
         }
     }
 
     return {
-        value: str,
         stripped: "",
+        value: str,
     }
 }
 

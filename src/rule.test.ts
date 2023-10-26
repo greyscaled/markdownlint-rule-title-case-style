@@ -1,5 +1,6 @@
 import { describe, expect, test } from "@jest/globals"
 import markdownlint from "markdownlint"
+
 import rule from "./rule.js"
 
 const testCaseSentenceCase = `# Hello world
@@ -43,19 +44,19 @@ interface Options {
 
 const lint = (testCase: string, options: Options = {}): markdownlint.LintResults => {
     return markdownlint.sync({
-        customRules: [rule],
         config: {
             "title-case-style": {
                 ...options,
             },
         },
+        customRules: [rule],
         strings: { testCase: testCase },
     })
 }
 
 // This is ripped from `applyFix` in markdownlint helpers
 // https://github.com/DavidAnson/markdownlint/blob/main/helpers/helpers.js#L993
-const fix = (line: string, fixInfo: markdownlint.FixInfo): string | null => {
+const fix = (line: string, fixInfo: markdownlint.FixInfo): null | string => {
     const editColumn = fixInfo.editColumn || 1
     const deleteCount = fixInfo.deleteCount || 0
     const insertText = fixInfo.insertText || ""
@@ -163,10 +164,10 @@ describe("markdownlint-rule-title-case-style", () => {
     test("ErrorReportWithPunctuation", () => {
         const testCase = "# Hello World!\n"
         const results = markdownlint.sync({
-            customRules: [rule],
             config: {
                 MD026: false,
             },
+            customRules: [rule],
             strings: { testCase: testCase },
         })
         expect(results.testCase).toHaveLength(1)

@@ -1,58 +1,44 @@
 import { MarkdownItToken, Rule, RuleOnError, RuleParams } from "markdownlint"
 import { titleCase } from "title-case"
+
+import parse, { RuleConfig } from "./config.js"
 import sentenceCase from "./sentenceCase.js"
 import stripIgnoredWords, { withIgnored } from "./stripIgnoredWords.js"
 import stripLead from "./stripLead.js"
 import stripPunctuation from "./stripPunctuation.js"
 
-const CaseSentence = "sentence"
-const CaseTitle = "title"
-
 const rule: Rule = {
-    names: ["title-case-style"],
     description: "Enforces case style in titles",
-    information: new URL(
-        "https://github.com/greyscaled/markdownlint-rule-title-case-style/blob/main/docs/rules/title-case-style.md",
-    ),
-    tags: ["headers", "headings"],
     function: (params: RuleParams, onError: RuleOnError): void => {
         forEachHeading(params, (token) => {
             const strippedLead = stripLead(token.content)
             const strippedPunctuation = stripPunctuation(strippedLead.value)
 
+            let config: RuleConfig
+            try {
+                config = parse(params.config)
+            } catch (err) {
+                throw new Error(`title-case-style: ${String(err)}`)
+            }
+
             let withoutIgnoredWords = strippedPunctuation.value
             let ignoredIndicies: number[] = []
             let isFirstIgnored = false
-            if (params.config.ignore) {
-                if (Array.isArray(params.config.ignore)) {
-                    const ignoredResult = stripIgnoredWords(
-                        withoutIgnoredWords,
-                        params.config.ignore,
-                    )
-                    withoutIgnoredWords = ignoredResult.value
-                    ignoredIndicies = [...ignoredResult.ignoredIndicies]
-                    isFirstIgnored = ignoredResult.isFirstIgnored
-                } else {
-                    throw new Error(
-                        `title-case-style: unrecognized config.ignore. Expected: an array of strings; Actual: ${params.config.ignore}`,
-                    )
-                }
+            if (config.ignore) {
+                const ignoredResult = stripIgnoredWords(withoutIgnoredWords, config.ignore)
+                withoutIgnoredWords = ignoredResult.value
+                ignoredIndicies = [...ignoredResult.ignoredIndicies]
+                isFirstIgnored = ignoredResult.isFirstIgnored
             }
 
             let expected: string
-            if (!params.config.case || params.config.case === CaseSentence) {
+            if (config.case === "sentence") {
                 expected = sentenceCase(withoutIgnoredWords)
                 if (isFirstIgnored) {
                     expected = strippedPunctuation.value[0] + expected.slice(1)
                 }
-            } else if (params.config.case === CaseTitle) {
-                expected = titleCase(withoutIgnoredWords)
-                expected = strippedPunctuation.value[0] + expected.slice(1)
             } else {
-                console.info(
-                    `title-case-style: unrecognized config.case. Expected: "sentence","title"; Actual: ${params.config.case}. Defaulting to "sentence".`,
-                )
-                expected = sentenceCase(withoutIgnoredWords)
+                expected = titleCase(withoutIgnoredWords)
                 expected = strippedPunctuation.value[0] + expected.slice(1)
             }
 
@@ -80,6 +66,11 @@ const rule: Rule = {
             })
         })
     },
+    information: new URL(
+        "https://github.com/greyscaled/markdownlint-rule-title-case-style/blob/main/docs/rules/title-case-style.md",
+    ),
+    names: ["title-case-style"],
+    tags: ["headers", "headings"],
 }
 export default rule
 

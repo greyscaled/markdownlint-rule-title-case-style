@@ -1,6 +1,6 @@
 export interface StripLead {
-    value: string
     stripped: string
+    value: string
 }
 
 const stripLead = (str: string): StripLead => {
@@ -16,8 +16,8 @@ const stripLead = (str: string): StripLead => {
     }
 
     return {
-        value: result,
         stripped,
+        value: result,
     }
 }
 
