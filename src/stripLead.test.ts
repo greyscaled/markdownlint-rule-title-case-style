@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
-import stripLead from "./stripLead"
+import stripLead from "./stripLead.js"
 
 describe("stripLead", () => {
     test("NothingToStrip", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
-import stripPunctuation from "./stripPunctuation"
+import stripPunctuation from "./stripPunctuation.js"
 
 describe("stripPunctuation", () => {
     test.each<[string, string, string]>([

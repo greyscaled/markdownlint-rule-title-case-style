@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
-import sentenceCase from "./sentenceCase"
+import sentenceCase from "./sentenceCase.js"
 
 describe("sentenceCase", () => {
     test.each<[string, string]>([

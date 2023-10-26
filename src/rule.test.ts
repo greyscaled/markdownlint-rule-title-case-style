@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals"
 import markdownlint from "markdownlint"
-import rule from "./rule"
+import rule from "./rule.js"
 
 const testCaseSentenceCase = `# Hello world
 

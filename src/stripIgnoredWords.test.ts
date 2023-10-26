@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
-import stripIgnoreWords, { withIgnored } from "./stripIgnoredWords"
+import stripIgnoreWords, { withIgnored } from "./stripIgnoredWords.js"
 
 describe("stripIgnoredWords", () => {
     test.each<[string, string[], string, number[]]>([
