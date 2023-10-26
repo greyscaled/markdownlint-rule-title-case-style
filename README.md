@@ -26,7 +26,8 @@ use case.
 
 #### `markdownlint-cli2` (recommended)
 
-Add one of the [supported configuration formats], for example `.markdownlint-cli2.jsonc`:
+Add one of the [supported configuration formats], for example
+`.markdownlint-cli2.jsonc`:
 
 ```jsonc
 {
@@ -108,7 +109,9 @@ wrap the lines as follows:
 This tool is in an early stage. Bug reports and feature requests are encouraged.
 For more information see [CONTRIBUTING].
 
-[`markdownlint` or related packages]: https://github.com/DavidAnson/markdownlint#related
-[supported configuration formats]: https://github.com/DavidAnson/markdownlint-cli2#configuration
+[`markdownlint` or related packages]:
+  https://github.com/DavidAnson/markdownlint#related
+[supported configuration formats]:
+  https://github.com/DavidAnson/markdownlint-cli2#configuration
 [CONTRIBUTING]:
   https://github.com/greyscaled/markdownlint-rule-title-case-style/blob/main/.github/CONTRIBUTING.md

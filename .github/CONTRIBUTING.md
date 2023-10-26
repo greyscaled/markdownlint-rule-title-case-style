@@ -1,7 +1,7 @@
 # Contributing
 
-This project is small in scope, and aims to be simple. That said, we do try
-to maintain some standards around code and commits, as most projects do.
+This project is small in scope, and aims to be simple. That said, we do try to
+maintain some standards around code and commits, as most projects do.
 
 ## General guidelines
 
@@ -12,7 +12,6 @@ to maintain some standards around code and commits, as most projects do.
 - Always check the issue tracker first
 
 - For fixes and small changes, feel free to open a PR (no issue)
-  
 - For larger and/or opinionated changes, consider opening an issue first
 
 ## PR guidelines
@@ -22,8 +21,8 @@ to maintain some standards around code and commits, as most projects do.
 
 ## Development
 
-The main rule and tests are in `rule.ts` and `rule.test.ts`. Everything you
-need to know can be inferred from those files.
+The main rule and tests are in `rule.ts` and `rule.test.ts`. Everything you need
+to know can be inferred from those files.
 
 ### Environment
 
