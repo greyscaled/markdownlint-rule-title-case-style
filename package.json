@@ -14,9 +14,9 @@
         "name": "Grey Barkans",
         "url": "https://github.com/greyscaled"
     },
+    "repository": "github:greyscaled/markdownlint-rule-title-case-style",
     "type": "module",
     "main": "rule.js",
-    "repository": "github:greyscaled/markdownlint-rule-title-case-style",
     "scripts": {
         "build": "tsc -p tsconfig.build.json",
         "check:all": "yarn format && yarn lint && yarn lint:md && yarn test",
