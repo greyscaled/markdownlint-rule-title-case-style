@@ -4,10 +4,12 @@
         "declaration": false,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
+        "lib": [],
         "module": "Node16",
         "moduleResolution": "Node16",
         "outDir": "dist",
         "removeComments": true,
+        "skipLibCheck": true,
         "strict": true,
         "target": "ESNext"
     },

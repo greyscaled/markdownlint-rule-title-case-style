@@ -1,4 +1,4 @@
-import { describe, test } from "@jest/globals"
+import { describe, expect, test } from "@jest/globals"
 import stripIgnoreWords, { withIgnored } from "./stripIgnoredWords"
 
 describe("stripIgnoredWords", () => {
