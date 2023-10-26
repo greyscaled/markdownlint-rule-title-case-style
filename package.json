@@ -23,7 +23,7 @@
         "format": "prettier --check .",
         "format:fix": "prettier --write .",
         "lint": "eslint .",
-        "lint:md": "yarn build && markdownlint-cli2 \"**/*.{md,mdx}\" \"!node_modules\" \"!dist\" \"!LICENSE\" \"!.github/pull_request_template.md\"",
+        "lint:md": "yarn build && markdownlint-cli2",
         "test": "NODE_OPTIONS=--experimental-vm-modules jest"
     },
     "dependencies": {
@@ -40,5 +40,6 @@
         "prettier": "^3.0.3",
         "ts-jest": "^29.1.1",
         "typescript": "^5.2.2"
-    }
+    },
+    "packageManager": "yarn@4.0.0"
 }

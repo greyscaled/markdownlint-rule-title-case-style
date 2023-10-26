@@ -1,0 +1,10 @@
+{
+    "customRules": ["./dist/rule.js"],
+    "config": {
+        "title-case-style": {
+            "case": "sentence",
+            "ignore": []
+        }
+    },
+    "globs": ["**/*.{md,mdx}", "!dist", "!node_modules"]
+}
