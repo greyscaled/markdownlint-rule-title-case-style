@@ -27,7 +27,7 @@ jobs:
                   cache-dependency-path: yarn.lock
 
             - name: yarn install
-              run: yarn install --frozen-lockfile
+              run: yarn install --immutable
 
             - name: yarn lint
               run: yarn lint
