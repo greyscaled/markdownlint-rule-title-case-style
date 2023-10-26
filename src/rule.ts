@@ -67,7 +67,7 @@ const rule: Rule = {
         })
     },
     information: new URL(
-        "https://github.com/greyscaled/markdownlint-rule-title-case-style/blob/main/docs/rules/title-case-style.md",
+        "https://github.com/greyscaled/markdownlint-rule-title-case-style/tree/main#usage",
     ),
     names: ["title-case-style"],
     tags: ["headers", "headings"],
