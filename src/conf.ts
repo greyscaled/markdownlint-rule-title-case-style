@@ -43,7 +43,7 @@ export const parse = (config: unknown): RuleConfig => {
     if ("ignore" in config) {
         if (!Array.isArray(config.ignore)) {
             throw new TitleCaseStyleError(
-                `config: ignore: expected 'array', got '${typeof config.ignore}`,
+                `config: ignore: expected 'array', got '${typeof config.ignore}'`,
             )
         }
 
