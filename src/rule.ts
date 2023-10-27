@@ -1,18 +1,12 @@
 import { Rule, RuleOnError, RuleParams } from "markdownlint"
 
-import { RuleConfig, parse } from "./conf.js"
-import TitleCaseStyleError from "./error.js"
+// import { parse } from "./conf.js"
 import filterHeadings from "./filter_headings.js"
 
 const rule: Rule = {
     description: "Enforces case style in titles",
     function: (params: RuleParams, onError: RuleOnError): void => {
-        let config: RuleConfig
-        try {
-            config = parse(params.config)
-        } catch (err) {
-            throw new TitleCaseStyleError(String(err))
-        }
+        // config = parse(params.config)
 
         for (const heading of filterHeadings(params.tokens)) {
             const actual = heading.content

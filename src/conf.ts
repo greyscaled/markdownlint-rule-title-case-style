@@ -1,3 +1,5 @@
+import TitleCaseStyleError from "./error.js"
+
 export interface RuleConfig {
     case: "sentence" | "title"
     ignore: string[]
@@ -19,7 +21,9 @@ export const parse = (config: unknown): RuleConfig => {
 
     if ("case" in config) {
         if (typeof config.case !== "string") {
-            throw new Error(`config: case: expected 'string', got '${typeof config.case}'`)
+            throw new TitleCaseStyleError(
+                `config: case: expected 'string', got '${typeof config.case}'`,
+            )
         }
 
         switch (config.case) {
@@ -30,7 +34,7 @@ export const parse = (config: unknown): RuleConfig => {
                 result.case = "title"
                 break
             default:
-                throw new Error(
+                throw new TitleCaseStyleError(
                     `config: case: expected ['sentence', 'title'], got '${config.case}'`,
                 )
         }
@@ -38,12 +42,14 @@ export const parse = (config: unknown): RuleConfig => {
 
     if ("ignore" in config) {
         if (!Array.isArray(config.ignore)) {
-            throw new Error(`config: ignore: expected 'array', got '${typeof config.ignore}`)
+            throw new TitleCaseStyleError(
+                `config: ignore: expected 'array', got '${typeof config.ignore}`,
+            )
         }
 
         const invalidTypes = config.ignore.filter((v) => typeof v !== "string")
         if (invalidTypes.length) {
-            throw new Error(`config: ignore: ignore must be of type string[]`)
+            throw new TitleCaseStyleError(`config: ignore: ignore must be of type string[]`)
         }
 
         result.ignore = config.ignore as string[]
