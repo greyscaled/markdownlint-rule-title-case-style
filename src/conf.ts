@@ -8,7 +8,7 @@ export const defaultRuleConfig: RuleConfig = {
     ignore: [],
 }
 
-const parse = (config: unknown): RuleConfig => {
+export const parse = (config: unknown): RuleConfig => {
     const result = {
         ...defaultRuleConfig,
     }
@@ -51,4 +51,3 @@ const parse = (config: unknown): RuleConfig => {
 
     return result
 }
-export default parse
