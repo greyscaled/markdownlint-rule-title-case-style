@@ -33,6 +33,7 @@
         "no-implicit-coercion": "error",
         "no-promise-executor-return": "error",
         "no-template-curly-in-string": "error",
-        "no-use-before-define": "off"
+        "no-use-before-define": "off",
+        "perfectionist/sort-imports": ["error", { "groups": ["external"] }]
     }
 }
