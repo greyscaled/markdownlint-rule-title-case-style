@@ -2,6 +2,7 @@ import { Rule, RuleOnError, RuleParams } from "markdownlint"
 
 // import { parse } from "./conf.js"
 import filterHeadings from "./filter_headings.js"
+import validateCase from "./validate_case.js"
 
 const rule: Rule = {
     description: "Enforces case style in titles",
@@ -9,20 +10,13 @@ const rule: Rule = {
         // config = parse(params.config)
 
         for (const heading of filterHeadings(params.tokens)) {
-            const actual = heading.content
-            const expected = "" // TODO
+            const violations = validateCase(heading)
 
-            if (expected !== heading.content) {
+            for (const violation of violations) {
                 onError({
-                    detail: `Expected: ${expected}; Actual: ${actual}`,
-                    fixInfo: {
-                        deleteCount: actual.length,
-                        // editColumn is 1s based, hence the + 1
-                        editColumn: heading.line.indexOf(heading.content) + 1,
-                        insertText: expected,
-                        lineNumber: heading.lineNumber,
-                    },
-                    lineNumber: heading.lineNumber,
+                    detail: violation.detail,
+                    fixInfo: violation.fixInfo,
+                    lineNumber: violation.lineNumber,
                 })
             }
         }
