@@ -4,7 +4,8 @@ import { FixInfo } from "markdownlint"
 import { fixLine, lint } from "./test_util.js"
 
 // prettier-ignore
-const mdSentenceCase = `# API documentation
+const mdSentenceCase =
+`# API documentation
 
 Eiusmod sit occaecat in elit duis consequat laboris consectetur. Ullamco eu
 tempor ea tempor sit. Commodo qui cillum labore minim mollit voluptate eiusmod.
@@ -38,7 +39,8 @@ irure anim reprehenderit consectetur nostrud labore.
 `
 
 // prettier-ignore
-const mdTitleCase = `# API Documentation
+const mdTitleCase =
+`# API Documentation
 
 Eiusmod sit occaecat in elit duis consequat laboris consectetur. Ullamco eu
 tempor ea tempor sit. Commodo qui cillum labore minim mollit voluptate eiusmod.
