@@ -24,7 +24,7 @@ export const fixLine = (line: string, fixInfo: FixInfo): null | string => {
     )
 }
 
-export const lint = (testCase: string, conf: RuleConfig): { testCase: LintError[] } => {
+export const lint = (testCase: string, conf: Partial<RuleConfig>): { testCase: LintError[] } => {
     const result = markdownlint.sync({
         config: {
             "title-case-style": {

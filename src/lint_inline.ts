@@ -1,23 +1,9 @@
 import { MarkdownItToken, RuleOnErrorInfo } from "markdownlint"
 import { titleCase } from "title-case"
 
+import { RuleConfig } from "./conf.js"
 import TitleCaseStyleError from "./error.js"
 import sentenceCase from "./transform_case.js"
-
-export interface TextNodeTranformer {
-    transform: (str: string, midSentence?: boolean) => string
-}
-
-export const createTransformer = (style: "sentence" | "title" = "sentence"): TextNodeTranformer => {
-    if (style === "title") {
-        return {
-            transform: (str: string) => titleCase(str),
-        }
-    }
-    return {
-        transform: sentenceCase,
-    }
-}
 
 export interface Violation {
     detail: RuleOnErrorInfo["detail"]
@@ -25,7 +11,7 @@ export interface Violation {
     lineNumber: RuleOnErrorInfo["lineNumber"]
 }
 
-const lintInline = (inlineToken: MarkdownItToken, transformer: TextNodeTranformer): Violation[] => {
+const lintInline = (inlineToken: MarkdownItToken, conf: RuleConfig): Violation[] => {
     // If outermost token isn't `inline`, we've done something wrong with
     // filtering the right tokens
     if (inlineToken.type !== "inline") {
@@ -71,7 +57,13 @@ const lintInline = (inlineToken: MarkdownItToken, transformer: TextNodeTranforme
                     continue
                 }
 
-                const expected = transformer.transform(child.content, midSentence)
+                let expected = ""
+                if (conf.case === "title") {
+                    expected = titleCase(child.content)
+                } else {
+                    expected = sentenceCase(child.content, midSentence, conf.ignore)
+                }
+
                 if (child.content !== expected) {
                     violatons.push({
                         detail: `Expected: '${expected}'; Actual: '${child.content}'`,

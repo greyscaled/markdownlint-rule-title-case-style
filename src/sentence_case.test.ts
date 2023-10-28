@@ -108,12 +108,6 @@ describe("sentenceCase", () => {
         ["ColonSentenceCase", "One: two", "One: two"],
 
         [
-            "BeatGoesOn",
-            "Notes and Observations Regarding Apple’s Announcements from ‘The Beat Goes On’ special event",
-            "Notes and observations regarding Apple’s announcements from ‘The Beat Goes On’ special event",
-        ],
-
-        [
             "BrownFox",
             "the quick brown fox jumps over the lazy dog",
             "The quick brown fox jumps over the lazy dog",
@@ -126,5 +120,17 @@ describe("sentenceCase", () => {
         // ["Read foo-bar.com", "Read foo-bar.com"],
     ])("Start%s", (_, str, expected) => {
         expect(sentenceCase(str)).toBe(expected)
+    })
+
+    test("Ignore", () => {
+        expect(
+            sentenceCase(
+                'Notes and Observations Regarding Apple\'s Announcements from "The Beat Goes On" special event',
+                false,
+                ["Apple's"],
+            ),
+        ).toBe(
+            'Notes and observations regarding Apple\'s announcements from "The Beat Goes On" special event',
+        )
     })
 })

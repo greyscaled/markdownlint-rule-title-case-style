@@ -39,6 +39,9 @@ This plugin attempts to minimize its scope and defer to existing rules. See all
   `proper-names` is _extremely_ handy, as usually these names should not just
   impact headings, but text anywhere else in the document.
 
+  Unfortunately, this rule doesn't have access to `proper-names`, and so at this
+  time you need to copy them to `ignore`.
+
   If you have proper names, such as "Kubernetes", "Apple" or "JavaScript", then
   configure them as a proper name.
 
@@ -72,7 +75,8 @@ Add one of the [supported configuration formats], for example
 {
   "config": {
     "title-case-style": {
-      "case": "sentence" // or "title"
+      "case": "sentence", // or "title"
+      "ignore": [] // string[]
     }
   },
   "customRules": ["markdownlint-rule-title-case-style"]
