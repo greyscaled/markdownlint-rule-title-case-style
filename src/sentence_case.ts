@@ -33,6 +33,7 @@ const sentenceCase = (str: string, midSentence = false, ignore: string[] = []): 
                     isStart = false
                 }
                 break
+            case "paren":
             case "whitespace":
             default:
                 result += token.value

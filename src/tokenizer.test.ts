@@ -2,11 +2,32 @@ import { expect, test } from "@jest/globals"
 
 import tokenizer, { Token } from "./tokenizer.js"
 
+// prettier-ignore
+const kitchenSink =
+`word (smith) one-of-a-kind. Truly  AWESOME!!
+`
+
 test("tokenizer", () => {
-    expect(tokenizer("sentence one-of-a-kind. Truly    AWESOME!!")).toEqual([
+    expect(tokenizer(kitchenSink)).toEqual([
         {
             group: "chars",
-            value: "sentence",
+            value: "word",
+        },
+        {
+            group: "whitespace",
+            value: " ",
+        },
+        {
+            group: "paren",
+            value: "(",
+        },
+        {
+            group: "chars",
+            value: "smith",
+        },
+        {
+            group: "paren",
+            value: ")",
         },
         {
             group: "whitespace",
@@ -27,14 +48,6 @@ test("tokenizer", () => {
         {
             group: "chars",
             value: "Truly",
-        },
-        {
-            group: "whitespace",
-            value: " ",
-        },
-        {
-            group: "whitespace",
-            value: " ",
         },
         {
             group: "whitespace",

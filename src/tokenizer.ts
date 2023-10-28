@@ -4,7 +4,9 @@
 // A title is always a "line" (newline ends the title in Markdown lexing), and
 // so we can conceive of a "line" containing various useful tokens:
 //
-//  <token> := <term> | <upper> | <quote> | <fquote> | <chars> | <ws>
+//  <token> := <paren> | <term> | <upper> | <quote> | <fquote> | <chars> | <ws>
+//
+//  <paren> := "(" | ")" | "{" | "}" | "[" | "]"
 //
 //   <term> := "!" | "." | "?"
 //
@@ -18,10 +20,10 @@
 //
 //     <ws> := any whitespace character
 const reToken =
-    /(?<term>[!.?])|(?<upper>[^\s!.?\p{Ll}]{2,}(?=[\s!.?]|$))|(?<quote>"[^"]+")|(?<fquote>“[^“”]+”)|(?<chars>[^\s!.?]+)|(?<ws>.)/gu
+    /(?<paren>[(){}[\]])|(?<term>[!.?])|(?<upper>[^\s!.?\p{Ll}]{2,}(?=[\s!.?]|$))|(?<quote>"[^"]+")|(?<fquote>“[^“”]+”)|(?<chars>[^(){}[\]!.?\s]+)|(?<ws>.)/gu
 
 export interface Token {
-    group: "chars" | "fquote" | "quote" | "terminal" | "uppercase" | "whitespace"
+    group: "chars" | "fquote" | "paren" | "quote" | "terminal" | "uppercase" | "whitespace"
     value: string
 }
 
@@ -36,6 +38,9 @@ const tokenizer = (str: string): Token[] => {
         let group: Token["group"] = "chars"
         if (typeof match.groups?.fquote !== "undefined") {
             group = "fquote"
+        }
+        if (typeof match.groups?.paren !== "undefined") {
+            group = "paren"
         }
         if (typeof match.groups?.quote !== "undefined") {
             group = "quote"
