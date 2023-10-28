@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals"
 
-import sentenceCase from "./sentence_case.js"
+import sentenceCase from "./transform_case.js"
 
 describe("sentenceCase", () => {
     test.each<[string, string, string]>([

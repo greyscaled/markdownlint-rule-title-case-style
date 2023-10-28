@@ -1,16 +1,17 @@
 import { Rule, RuleOnError, RuleParams } from "markdownlint"
 
-// import { parse } from "./conf.js"
+import parseConfig from "./conf.js"
 import filterHeadings from "./filter_headings.js"
-import validateCase from "./validate_case.js"
+import lintInline, { createTransformer } from "./lint_inline.js"
 
 const rule: Rule = {
     description: "Enforces case style in titles",
     function: (params: RuleParams, onError: RuleOnError): void => {
-        // config = parse(params.config)
+        const config = parseConfig(params.config)
+        const transformer = createTransformer(config.case)
 
         for (const heading of filterHeadings(params.tokens)) {
-            const violations = validateCase(heading)
+            const violations = lintInline(heading, transformer)
 
             for (const violation of violations) {
                 onError({

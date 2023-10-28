@@ -1,28 +1,48 @@
 # Contributing
 
-This project is small in scope, and aims to be simple. That said, we do try to
-maintain some standards around code and commits, as most projects do.
+This project is small in scope, and aims to be simple, with sensible standards.
 
-## General guidelines
-
-- Be patient with the maintainer and respectful of others
-
-## Issue guidelines
-
-- Always check the issue tracker first
+## Issues
 
 - For fixes and small changes, feel free to open a PR (no issue)
 - For larger and/or opinionated changes, consider opening an issue first
 
 ## PR guidelines
 
-- The title of your PR should adhere to [conventional commits]
-  - We squash, and only care that the title reflects the change
+- PR titles adhere [conventional commits]
 
 ## Development
 
-The main rule and tests are in `rule.ts` and `rule.test.ts`. Everything you need
-to know can be inferred from those files.
+The main rule (entrypoint) is in `rule.ts`.
+
+### How it works
+
+See [CommonMark Spec] and [`markdown-it`] for more information and to see the
+tokens. It's also useful to use to generate test cases.
+
+- `rule.ts`: the rule receives a slice of markdown-it tokens
+
+- `filter_headings.ts`: the tokens are filtered for heading [leaf block]
+
+  - the content of headings are always [inline]
+
+- `lint_inline.ts`: each [inline] heading is validated, and linted for
+  violations
+
+  - the [inline] heading child nodes are walked for [text nodes]
+
+    - [code spans] are ignored
+    - [links] and [autolinks] are ignored
+    - [images] are ignored
+
+  - text inside [emphasis and strong emphasis] is processed as if the emphasis
+    does not exist
+
+  - `tokenizer.ts`: [text nodes] are tokenized and case transformations are
+    applied
+
+  - `lint_inline.ts` is able to report violations for each text node that
+    doesn't have correct casing
 
 ### Environment
 
@@ -39,3 +59,14 @@ Everything should have tests, since the project is small but many things can go
 wrong with string manipulation etc.
 
 [conventional commits]: https://www.conventionalcommits.org/en/v1.0.0/
+[CommonMark Spec]: https://spec.commonmark.org/current/
+[`markdown-it`]: https://markdown-it.github.io/
+[leaf block]: https://spec.commonmark.org/current/#leaf-blocks
+[inline]: https://spec.commonmark.org/current/#inlines
+[text nodes]: https://spec.commonmark.org/current/#textual-content
+[code spans]: https://spec.commonmark.org/current/#code-spans
+[links]: https://spec.commonmark.org/current/#links
+[autolinks]: https://spec.commonmark.org/current/#autolinks
+[images]: https://spec.commonmark.org/current/#images
+[emphasis and strong emphasis]:
+  https://spec.commonmark.org/current/#emphasis-and-strong-emphasis

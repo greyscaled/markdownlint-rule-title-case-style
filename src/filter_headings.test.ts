@@ -1,7 +1,7 @@
 import { expect, test } from "@jest/globals"
 
 import filterHeadings from "./filter_headings.js"
-import { generateTokens } from "./testutil/testutil.js"
+import { generateTokens } from "./test_util.js"
 
 // prettier-ignore
 const md = `
@@ -47,7 +47,6 @@ Check out [some other link]
 test("filterHeadings", () => {
     const tokens = generateTokens(md)
     const headings = filterHeadings(tokens)
-    console.log(JSON.stringify(headings, null, 2))
     expect(headings.length).toBeLessThan(tokens.length)
     expect(headings.length).toBe(5)
     expect(headings).toEqual([
