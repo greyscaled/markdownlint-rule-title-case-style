@@ -43,6 +43,11 @@ test("sentenceCase", () => {
                 'Notes and observations regarding Apple\'s announcements from "The Beat Goes On" special event',
             ignore: ["Apple's"],
         },
+        {
+            str: "Feature (Cloud)",
+            expected: "Feature (Cloud)",
+            ignore: ["Cloud"],
+        },
     ]
 
     for (const tc of testCases) {

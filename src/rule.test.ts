@@ -27,12 +27,17 @@ irure anim reprehenderit consectetur nostrud labore.
 
 ## **Special** thanks to "Our Friends and Family" (:D)
 
+## Releases
+
+### August 2023
+
+#### Feature (Cloud)
+
 [ref-1]: /ref-1
 `
 
 // prettier-ignore
-const mdTitleCase = 
-`# API Documentation
+const mdTitleCase = `# API Documentation
 
 Eiusmod sit occaecat in elit duis consequat laboris consectetur. Ullamco eu
 tempor ea tempor sit. Commodo qui cillum labore minim mollit voluptate eiusmod.
@@ -54,17 +59,23 @@ irure anim reprehenderit consectetur nostrud labore.
 
 ## **Special** Thanks to "Our Friends and Family" (:D)
 
+## Releases
+
+### August 2023
+
+#### Feature (Cloud)
+
 [ref-1]: /ref-1
 `
 
 describe("markdownlint-rule-title-case-style", () => {
     test("SentenceCase", () => {
-        const results = lint(mdSentenceCase, { case: "sentence", ignore: ["JavaScript"] })
+        const results = lint(mdSentenceCase, { case: "sentence", ignore: ["Cloud", "JavaScript"] })
         expect(results.testCase).toHaveLength(0)
     })
 
     test("TitleCase", () => {
-        const results = lint(mdTitleCase, { case: "title", ignore: ["JavaScript"] })
+        const results = lint(mdTitleCase, { case: "title", ignore: ["Cloud", "JavaScript"] })
         expect(results.testCase).toHaveLength(0)
     })
 

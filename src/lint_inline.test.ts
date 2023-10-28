@@ -6,7 +6,7 @@ import lintInline, { Violation } from "./lint_inline.js"
 import { generateTokens } from "./test_util.js"
 
 describe("lintInline", () => {
-    test("Valid", () => {
+    test("NoViolation", () => {
         const headings = filterHeadings(generateTokens("# Hello world\n"))
         expect(lintInline(headings[0], { case: "sentence", ignore: [] })).toEqual([])
     })
@@ -25,6 +25,32 @@ describe("lintInline", () => {
                 lineNumber: 1,
             } as Violation,
         ])
+    })
+
+    test("MultipleViolations", () => {
+        const headings = filterHeadings(generateTokens("# Hello Friends `code` and Family\n"))
+        expect(lintInline(headings[0], { case: "sentence", ignore: [] })).toEqual([
+            {
+                detail: "Expected: 'Hello friends '; Actual: 'Hello Friends '",
+                fixInfo: {
+                    deleteCount: "Hello Friends ".length,
+                    editColumn: 3,
+                    insertText: "Hello friends ",
+                    lineNumber: 1,
+                },
+                lineNumber: 1,
+            },
+            {
+                detail: "Expected: ' and family'; Actual: ' and Family'",
+                fixInfo: {
+                    deleteCount: " and Family".length,
+                    editColumn: 3 + "Hello Friends `code`".length,
+                    insertText: " and family",
+                    lineNumber: 1,
+                },
+                lineNumber: 1,
+            } as Violation,
+        ] as Violation[])
     })
 
     test("EmptyHeading", () => {
