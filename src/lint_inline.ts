@@ -3,7 +3,7 @@ import { titleCase } from "title-case"
 
 import { RuleConfig } from "./conf.js"
 import TitleCaseStyleError from "./error.js"
-import sentenceCase from "./transform_case.js"
+import sentenceCase from "./sentence_case.js"
 
 export interface Violation {
     detail: RuleOnErrorInfo["detail"]
@@ -39,6 +39,8 @@ const lintInline = (inlineToken: MarkdownItToken, conf: RuleConfig): Violation[]
                 if (i === 0) midSentence = true
                 break
             case "link_open":
+                // Heading starts with link: case insensitive
+                if (i === 0) midSentence = true
                 ctx = "link"
                 break
             case "link_close":
