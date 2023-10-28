@@ -16,7 +16,7 @@ const lintInline = (inlineToken: MarkdownItToken, conf: RuleConfig): Violation[]
     // filtering the right tokens
     if (inlineToken.type !== "inline") {
         throw new TitleCaseStyleError(
-            `validate: invalid token: expected 'inline', got '${inlineToken.type}'`,
+            `lint: invalid token: expected 'inline', got '${inlineToken.type}'`,
             true,
         )
     }
