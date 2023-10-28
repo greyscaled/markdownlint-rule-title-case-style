@@ -1,254 +1,101 @@
 import { describe, expect, test } from "@jest/globals"
-import markdownlint from "markdownlint"
-import rule from "./rule"
+import { FixInfo } from "markdownlint"
 
-const testCaseSentenceCase = `# Hello world
+import { fixLine, lint } from "./test_util.js"
 
-some content
+// prettier-ignore
+const mdSentenceCase = 
+`# API documentation
 
-## Standards
+Eiusmod sit occaecat in elit duis consequat laboris consectetur. Ullamco eu
+tempor ea tempor sit. Commodo qui cillum labore minim mollit voluptate eiusmod.
+Est dolore anim anim fugiat. Voluptate laborum exercitation duis deserunt do est
+commodo nostrud consequat sint est in. Consequat est consectetur fugiat eiusmod
+irure anim reprehenderit consectetur nostrud labore.
 
-### 1. SQL standards
+## Methods (in alphabetical order)
 
-### 2. PostgreSQL-SQL standards
+### \`sort()\` [ref-1]
 
-### 11. Eleven
+### \`toString()\` something something something
 
-#### 44. Fourty four, thirty three
+## Did we tell you that we love SQL? And JavaScript?
 
-## Have questions?
+### \`SELECT\`
+
+### INSERT INTO
+
+## **Special** thanks to "Our Friends and Family" (:D)
+
+[ref-1]: /ref-1
 `
 
-const testCaseTitleCase = `# Hello World
+// prettier-ignore
+const mdTitleCase = 
+`# API Documentation
 
-some content
+Eiusmod sit occaecat in elit duis consequat laboris consectetur. Ullamco eu
+tempor ea tempor sit. Commodo qui cillum labore minim mollit voluptate eiusmod.
+Est dolore anim anim fugiat. Voluptate laborum exercitation duis deserunt do est
+commodo nostrud consequat sint est in. Consequat est consectetur fugiat eiusmod
+irure anim reprehenderit consectetur nostrud labore.
 
-## Standards
+## Methods (in Alphabetical Order)
 
-### 1. SQL Standards
+### \`sort()\` [ref-1]
 
-### 2. PostgreSQL-SQL Standards
+### \`toString()\` Something as Something Else
 
-### 11. Eleven
+## Did We Tell You That We Love SQL? And JavaScript?
 
-#### 44. Fourty Four, Thirty Three
+### \`SELECT\`
 
-## Have Questions?
+### INSERT INTO
+
+## **Special** Thanks to "Our Friends and Family" (:D)
+
+[ref-1]: /ref-1
 `
-
-interface Options {
-    case?: "sentence" | "title"
-    ignore?: string[]
-}
-
-const lint = (testCase: string, options: Options = {}): markdownlint.LintResults => {
-    return markdownlint.sync({
-        customRules: [rule],
-        config: {
-            "title-case-style": {
-                ...options,
-            },
-        },
-        strings: { testCase: testCase },
-    })
-}
-
-// This is ripped from `applyFix` in markdownlint helpers
-// https://github.com/DavidAnson/markdownlint/blob/main/helpers/helpers.js#L993
-const fix = (line: string, fixInfo: markdownlint.FixInfo): string | null => {
-    const editColumn = fixInfo.editColumn || 1
-    const deleteCount = fixInfo.deleteCount || 0
-    const insertText = fixInfo.insertText || ""
-    const editIndex = editColumn - 1
-
-    if (deleteCount < 0) {
-        return null
-    }
-
-    return (
-        line.slice(0, editIndex) +
-        insertText.replace(/\n/g, "\n") +
-        line.slice(editIndex + deleteCount)
-    )
-}
 
 describe("markdownlint-rule-title-case-style", () => {
-    // Sentence case
     test("SentenceCase", () => {
-        const results = lint(testCaseSentenceCase)
+        const results = lint(mdSentenceCase, { case: "sentence", ignore: ["JavaScript"] })
         expect(results.testCase).toHaveLength(0)
     })
-    test("SentenceCaseCatchTitleCase", () => {
-        const testCase = "# Hello World\n"
-        const results = lint(testCase)
-        expect(results.testCase).toHaveLength(1)
-        expect(results.testCase[0].errorDetail).toBe("Expected: Hello world; Actual: Hello World")
-    })
 
-    // Title case
     test("TitleCase", () => {
-        const results = lint(testCaseTitleCase, { case: "title" })
-        expect(results.testCase).toHaveLength(0)
-    })
-    test("TitleCaseCatchSentenceCase", () => {
-        const testCase = "# Hello world\n"
-        const results = lint(testCase, { case: "title" })
-        expect(results.testCase).toHaveLength(1)
-        expect(results.testCase[0].errorDetail).toBe("Expected: Hello World; Actual: Hello world")
-    })
-
-    // Ignore
-    test("Ignore", () => {
-        const testCase = "# Check out SQL\n"
-        const results = lint(testCase, { ignore: ["SQL"] })
-        expect(results.testCase).toHaveLength(0)
-    })
-    test("IgnoreCatchesCase", () => {
-        const testCase = "# Check Out SQL\n"
-        const results = lint(testCase, { ignore: ["SQL"] })
-        expect(results.testCase).toHaveLength(1)
-        expect(results.testCase[0].errorDetail).toBe(
-            "Expected: Check out SQL; Actual: Check Out SQL",
-        )
-    })
-    test("IgnoreLastWordPunctuated", () => {
-        const testCase = `# What is SQL?\n`
-        const results = lint(testCase, { ignore: ["SQL"] })
-        expect(results.testCase).toHaveLength(0)
-    })
-    test("IgnoreWithCommas", () => {
-        const testCase = "# A, B, C and D\n"
-        const results = lint(testCase, { ignore: ["A", "B", "C", "D"] })
-        expect(results.testCase).toHaveLength(0)
-    })
-    test("IgnoreWithCommasCatchesCase", () => {
-        const testCase = "# A, B, C, D and E\n"
-        const results = lint(testCase, { ignore: ["A", "B"] })
-        expect(results.testCase).toHaveLength(1)
-        expect(results.testCase[0].errorDetail).toBe(
-            "Expected: A, B, c, d and e; Actual: A, B, C, D and E",
-        )
-    })
-    test("IgnoreLowercaseWordTitleCase", () => {
-        const testCase = "# Read company Blog\n"
-        const results = lint(testCase, { case: "title", ignore: ["company"] })
-        expect(results.testCase).toHaveLength(0)
-    })
-    test("IgnoreFirstWordSentenceCase", () => {
-        const testCase = "# company blog is really fun to read\n"
-        const results = lint(testCase, { case: "sentence", ignore: ["company"] })
-        expect(results.testCase).toHaveLength(0)
-    })
-    test("IgnoreFirstWordTitleCase", () => {
-        const testCase = "# company Blog Is Really Fun to Read\n"
-        const results = lint(testCase, { case: "title", ignore: ["company"] })
+        const results = lint(mdTitleCase, { case: "title", ignore: ["JavaScript"] })
         expect(results.testCase).toHaveLength(0)
     })
 
-    // Reporting
-    test("ErrorReportWithNumberedList", () => {
-        const testCase = "# 1. Some List\n"
-        const results = lint(testCase)
-        expect(results.testCase).toHaveLength(1)
-        expect(results.testCase[0].errorDetail).toBe("Expected: 1. Some list; Actual: 1. Some List")
-    })
-    test("ErrorReportWithCommas", () => {
-        const testCase = "# Hello, World and Goodbye, Cruel World\n"
-        const results = lint(testCase)
-        expect(results.testCase).toHaveLength(1)
-        expect(results.testCase[0].errorDetail).toBe(
-            "Expected: Hello, world and goodbye, cruel world; Actual: Hello, World and Goodbye, Cruel World",
-        )
-    })
-    test("ErrorReportWithPunctuation", () => {
-        const testCase = "# Hello World!\n"
-        const results = markdownlint.sync({
-            customRules: [rule],
-            config: {
-                MD026: false,
-            },
-            strings: { testCase: testCase },
-        })
-        expect(results.testCase).toHaveLength(1)
-        expect(results.testCase[0].errorDetail).toBe("Expected: Hello world!; Actual: Hello World!")
-    })
-    test("ErrorReportWithFirstIgnoredSentenceCase", () => {
-        const testCase = "# company Blog is Great\n"
-        const results = markdownlint.sync({
-            config: {
-                "title-case-style": {
-                    case: "sentence",
-                    ignore: ["company"],
-                },
-            },
-            customRules: [rule],
-            strings: { testCase: testCase },
-        })
-        expect(results.testCase).toHaveLength(1)
-        expect(results.testCase[0].errorDetail).toBe(
-            "Expected: company blog is great; Actual: company Blog is Great",
-        )
-    })
-    test("ErrorReportWithFirstIgnoredTitleCase", () => {
-        const testCase = "# company blog is Great\n"
-        const results = markdownlint.sync({
-            config: {
-                "title-case-style": {
-                    case: "title",
-                    ignore: ["company"],
-                },
-            },
-            customRules: [rule],
-            strings: { testCase: testCase },
-        })
-        expect(results.testCase).toHaveLength(1)
-        expect(results.testCase[0].errorDetail).toBe(
-            "Expected: company Blog Is Great; Actual: company blog is Great",
-        )
-    })
+    test("ReportErrors", () => {
+        const testCases: Array<[string, string]> = [
+            ["# Hello World\n", "Expected: 'Hello world'; Actual: 'Hello World'"],
+            ["# [link](http://test.com) Hello\n", "Expected: ' hello'; Actual: ' Hello'"],
+            ["# `INSERT` SQL Method\n", "Expected: ' SQL method'; Actual: ' SQL Method'"],
+        ]
 
-    // Autofix
-    test("AutoFixSentenceCase", () => {
-        // Given: title case
-        const testCase = "# Hello World\n"
-
-        // When: lint for sentence case
-        const before = lint(testCase, { case: "sentence" })
-        expect(before.testCase).toHaveLength(1)
-
-        // Then: fixInfo should be sentence case
-        const { fixInfo } = before.testCase[0]
-        expect(fixInfo).toBeDefined()
-        expect(fixInfo?.insertText).toBe("Hello world")
-
-        if (!fixInfo) {
-            throw new Error("fixInfo is null")
+        for (const tc of testCases) {
+            const results = lint(tc[0], { case: "sentence" })
+            expect(results.testCase[0].errorDetail).toBe(tc[1])
         }
+    })
 
-        // When: the string is fixed
-        const testCaseFixed = fix(testCase, fixInfo)
-        expect(testCaseFixed).toBe("# Hello world\n")
+    test("Autofix", () => {
+        const testCases: Array<[string, string]> = [
+            ["# Hello World\n", "# Hello world\n"],
+            ["# [link](http://test.com) Hello\n", "# [link](http://test.com) hello\n"],
+            ["# `INSERT` SQL Method\n", "# `INSERT` SQL method\n"],
+        ]
 
-        if (!testCaseFixed) {
-            throw new Error("testCaseFixed is null or empty")
+        for (const tc of testCases) {
+            const results = lint(tc[0], { case: "sentence" })
+            const { fixInfo } = results.testCase[0]
+            expect(fixInfo).toBeDefined()
+
+            const fixed = fixLine(tc[0], fixInfo as FixInfo)
+            expect(fixed).toBe(tc[1])
+            expect(lint(fixed as string, { case: "sentence" }).testCase).toHaveLength(0)
         }
-
-        // When: lint the fixed string
-        const after = lint(testCaseFixed, { case: "sentence" })
-
-        // Then: there are no errors
-        expect(after.testCase).toHaveLength(0)
-    })
-
-    // Code block
-    test("CodeBlockSentenceCase", () => {
-        const testCase = "# `toString()` method\n"
-        const results = lint(testCase, { case: "sentence" })
-        expect(results.testCase).toHaveLength(0)
-    })
-    test("CodeBlockTitleCase", () => {
-        const testCase = "# `toString()` Method\n"
-        const results = lint(testCase, { case: "title" })
-        expect(results.testCase).toHaveLength(0)
     })
 })

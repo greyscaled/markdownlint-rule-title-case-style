@@ -11,8 +11,29 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
+    format:
+        name: Style
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js environment
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 20
+                  cache: "yarn"
+                  cache-dependency-path: yarn.lock
+
+            - name: yarn install
+              run: yarn install --immutable
+
+            - name: yarn format
+              run: yarn format
+
     lint:
-        name: lint
+        name: Lint
         runs-on: ubuntu-latest
 
         steps:
@@ -35,11 +56,8 @@ jobs:
             - name: yarn lint:md
               run: yarn lint:md
 
-            - name: yarn format
-              run: yarn format
-
     test:
-        name: test
+        name: Test
         runs-on: ubuntu-latest
 
         steps:

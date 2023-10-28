@@ -1,98 +1,30 @@
-import { MarkdownItToken, Rule, RuleOnError, RuleParams } from "markdownlint"
-import { titleCase } from "title-case"
-import sentenceCase from "./sentenceCase.js"
-import stripIgnoredWords, { withIgnored } from "./stripIgnoredWords.js"
-import stripLead from "./stripLead.js"
-import stripPunctuation from "./stripPunctuation.js"
+import { Rule, RuleOnError, RuleParams } from "markdownlint"
 
-const CaseSentence = "sentence"
-const CaseTitle = "title"
+import parseConf from "./conf.js"
+import filterHeadings from "./filter_headings.js"
+import lintInline from "./lint_inline.js"
 
 const rule: Rule = {
-    names: ["title-case-style"],
     description: "Enforces case style in titles",
-    information: new URL(
-        "https://github.com/greyscaled/markdownlint-rule-title-case-style/blob/main/docs/rules/title-case-style.md",
-    ),
-    tags: ["headers", "headings"],
     function: (params: RuleParams, onError: RuleOnError): void => {
-        forEachHeading(params, (token) => {
-            const strippedLead = stripLead(token.content)
-            const strippedPunctuation = stripPunctuation(strippedLead.value)
+        const conf = parseConf(params.config)
 
-            let withoutIgnoredWords = strippedPunctuation.value
-            let ignoredIndicies: number[] = []
-            let isFirstIgnored = false
-            if (params.config.ignore) {
-                if (Array.isArray(params.config.ignore)) {
-                    const ignoredResult = stripIgnoredWords(
-                        withoutIgnoredWords,
-                        params.config.ignore,
-                    )
-                    withoutIgnoredWords = ignoredResult.value
-                    ignoredIndicies = [...ignoredResult.ignoredIndicies]
-                    isFirstIgnored = ignoredResult.isFirstIgnored
-                } else {
-                    throw new Error(
-                        `title-case-style: unrecognized config.ignore. Expected: an array of strings; Actual: ${params.config.ignore}`,
-                    )
-                }
+        for (const heading of filterHeadings(params.tokens)) {
+            const violations = lintInline(heading, conf)
+
+            for (const violation of violations) {
+                onError({
+                    detail: violation.detail,
+                    fixInfo: violation.fixInfo,
+                    lineNumber: violation.lineNumber,
+                })
             }
-
-            let expected: string
-            if (!params.config.case || params.config.case === CaseSentence) {
-                expected = sentenceCase(withoutIgnoredWords)
-                if (isFirstIgnored) {
-                    expected = strippedPunctuation.value[0] + expected.slice(1)
-                }
-            } else if (params.config.case === CaseTitle) {
-                expected = titleCase(withoutIgnoredWords)
-                expected = strippedPunctuation.value[0] + expected.slice(1)
-            } else {
-                console.info(
-                    `title-case-style: unrecognized config.case. Expected: "sentence","title"; Actual: ${params.config.case}. Defaulting to "sentence".`,
-                )
-                expected = sentenceCase(withoutIgnoredWords)
-                expected = strippedPunctuation.value[0] + expected.slice(1)
-            }
-
-            if (expected === withoutIgnoredWords) {
-                return
-            }
-
-            const expectedInner = withIgnored(strippedLead.value, expected, ignoredIndicies)
-            const expectedFull = `${strippedLead.stripped}${expectedInner}${strippedPunctuation.stripped}`
-
-            onError({
-                detail: `Expected: ${expectedFull}; Actual: ${token.content}`,
-                fixInfo: {
-                    // The token should be in the form of <heading> <content>,
-                    // but technically there could be more leading whitespace.
-                    // To try and make the fix work, we use the token.content
-                    // to remove it from the leading <heading> (ie: '#')
-                    deleteCount: token.content.length,
-                    // editColumn is 1s based, hence the + 1
-                    editColumn: token.line.indexOf(token.content) + 1,
-                    insertText: expectedFull,
-                    lineNumber: token.lineNumber,
-                },
-                lineNumber: token.lineNumber,
-            })
-        })
+        }
     },
+    information: new URL(
+        "https://github.com/greyscaled/markdownlint-rule-title-case-style/tree/main#usage",
+    ),
+    names: ["title-case-style"],
+    tags: ["headers", "headings"],
 }
 export default rule
-
-const forEachHeading = (params: RuleParams, fn: (token: MarkdownItToken) => void): void => {
-    let heading = null
-
-    for (const token of params.tokens) {
-        if (token.type === "heading_open") {
-            heading = token
-        } else if (token.type === "heading_close") {
-            heading = null
-        } else if (token.type === "inline" && heading) {
-            fn(token)
-        }
-    }
-}

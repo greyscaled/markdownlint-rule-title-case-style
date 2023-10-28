@@ -1,6 +1,39 @@
 {
-    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-type-checked",
+        "plugin:@typescript-eslint/strict",
+        "plugin:perfectionist/recommended-natural"
+    ],
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint"],
-    "root": true
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "project": "./tsconfig.json",
+        "sourceType": "module"
+    },
+    "plugins": ["@typescript-eslint", "perfectionist"],
+    "root": true,
+    "rules": {
+        "@typescript-eslint/array-type": ["error", { "default": "array-simple" }],
+        "@typescript-eslint/brace-style": ["error", "1tbs", { "allowSingleLine": false }],
+        "@typescript-eslint/consistent-indexed-object-style": "error",
+        "@typescript-eslint/consistent-type-assertions": "error",
+        "@typescript-eslint/consistent-type-definitions": "error",
+        "@typescript-eslint/explicit-module-boundary-types": "error",
+        "@typescript-eslint/method-signature-style": "error",
+        "@typescript-eslint/no-use-before-define": "off",
+        "array-callback-return": "error",
+        "default-case": "error",
+        "default-case-last": "error",
+        "eqeqeq": "error",
+        "no-await-in-loop": "error",
+        "no-duplicate-imports": "error",
+        "no-eval": "error",
+        "no-implicit-coercion": "error",
+        "no-promise-executor-return": "error",
+        "no-template-curly-in-string": "error",
+        "no-use-before-define": "off",
+        "perfectionist/sort-imports": ["error", { "groups": ["external"] }]
+    }
 }
