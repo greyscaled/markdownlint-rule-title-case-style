@@ -9,41 +9,35 @@ Currently supported cases are:
 ## Scope
 
 This plugin attempts to minimize its scope and defer to existing rules. See all
-[existing rules], and in particular take note of:
+[existing rules], and in particular:
 
 - [no-trailing-spaces]
 
-  Although unlikely that it has any effect, this rule assumes headings do not
-  have trailing spaces.
+  `title-case-style` assumes headings do not have trailing spaces.
 
 - [no-trailing-punctuation]
 
-  Although unlikely that it has any effect, this rules assumes that headings
-  either do not end in punctuation, or end in "?".
+  `title-case-style` can handle ending punctuation. If there is more than one
+  sentence, each is processed. For example, the following is valid sentence
+  case:
 
-  If there is more than one sentence in the heading, the rule does try to treat
-  each sentence independently.
-
-  Example: `# Sentence one. Sentence two`
+  ```md
+  # Sentence one. Sentence two
+  ```
 
 - [no-inline-html]
 
-  > **important**: This rule does not properly parse inline html in headings and
-  > cannot guarantee results
+  > **important**: This rule does not properly parse inline html in headings
 
   By default, `no-inline-html` has no allowed elements. This rule currently
   assumes the default.
 
 - [proper-names]
 
-  `proper-names` is _extremely_ handy, as usually these names should not just
-  impact headings, but text anywhere else in the document.
-
-  Unfortunately, this rule doesn't have access to `proper-names`, and so at this
-  time you need to copy them to `ignore`.
-
-  If you have proper names, such as "Kubernetes", "Apple" or "JavaScript", then
-  configure them as a proper name.
+  `proper-names` is _extremely_ handy, as it can find mistakes like "Javascript"
+  anywhere in the document, and correct it to "JavaScript". Unfortunately,
+  `title-case-style` doesn't have access to the configuration for
+  `proper-names`. You may need to copy a subset of them to `ignore`.
 
 ## Install
 
@@ -76,7 +70,7 @@ Add one of the [supported configuration formats], for example
   "config": {
     "title-case-style": {
       "case": "sentence", // or "title"
-      "ignore": [] // string[]
+      "ignore": ["JavaScript"]
     }
   },
   "customRules": ["markdownlint-rule-title-case-style"]
@@ -93,6 +87,7 @@ markdownlint.sync({
   config: {
     "title-case-style": {
       case: "sentence", // or "title"
+      ignore: ["JavaScript"],
     },
   },
 })
@@ -103,7 +98,7 @@ markdownlint.sync({
 This rule can automatically fix violations. For example with
 `markdownlint-cli-2`:
 
-```console
+```shell
 markdownlint-cli2-fix
 ```
 
