@@ -14,7 +14,7 @@ irure anim reprehenderit consectetur nostrud labore.
 
 ### \`toString()\` something something something
 
-## Did we tell you that we love SQL?
+## Did we tell you that we love SQL? And JavaScript?
 
 ### \`SELECT\`
 
@@ -41,7 +41,7 @@ irure anim reprehenderit consectetur nostrud labore.
 
 ### \`toString()\` Something as Something Else
 
-## Did We Tell You That We Love SQL?
+## Did We Tell You That We Love SQL? And JavaScript?
 
 ### \`SELECT\`
 
