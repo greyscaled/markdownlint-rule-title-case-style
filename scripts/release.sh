@@ -54,6 +54,7 @@ if [[ $(git branch --show-current) != 'main' ]]; then
   exit 1
 fi
 
-./scripts/build.sh
+yarn check:all
+make dist
 cd dist || exit 1
 npm publish
