@@ -17,32 +17,36 @@ The main rule (entrypoint) is in `rule.ts`.
 
 ### How it works
 
-See [CommonMark Spec] and [`markdown-it`] for more information and to see the
-tokens. It's also useful to use to generate test cases.
+See [CommonMark Spec] and [`markdown-it`] for more information on the
+specification and token structure.
+
+A high-level view of the algorithm:
 
 - `rule.ts`: the rule receives a slice of markdown-it tokens
 
-- `filter_headings.ts`: the tokens are filtered for heading [leaf block]
+- `filter_headings.ts`: tokens are filtered for heading [leaf block]
 
   - the content of headings are always [inline]
 
 - `lint_inline.ts`: each [inline] heading is validated, and linted for
-  violations
+  violations. To lint:
 
   - the [inline] heading child nodes are walked for [text nodes]
 
     - [code spans] are ignored
     - [links] and [autolinks] are ignored
     - [images] are ignored
+    - text inside [emphasis and strong emphasis] is processed as if the emphasis
+      does not exist
 
-  - text inside [emphasis and strong emphasis] is processed as if the emphasis
-    does not exist
+  - once a text node is reached, it's content is transformed by the case that
+    has been configured (sentence, or title)
 
-  - `tokenizer.ts`: [text nodes] are tokenized and case transformations are
-    applied
+    - if sentence, `tokenizer.ts`: [text nodes] are tokenized to make case
+      transformation logic easier to apply.
 
-  - `lint_inline.ts` is able to report violations for each text node that
-    doesn't have correct casing
+- `lint_inline.ts` is able to report violations for each text node that doesn't
+  have correct casing
 
 ### Environment
 

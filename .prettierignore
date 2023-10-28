@@ -1,6 +1,3 @@
 dist
 node_modules
-.gitignore
-.prettierignore
-.prettierrc
 jest.config.js
