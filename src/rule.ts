@@ -5,7 +5,7 @@ import filterHeadings from "./filter_headings.js"
 import lintInline from "./lint_inline.js"
 
 const rule: Rule = {
-    description: "Enforces case style in titles",
+    description: "Letter case style",
     function: (params: RuleParams, onError: RuleOnError): void => {
         const conf = parseConf(params.config)
 
