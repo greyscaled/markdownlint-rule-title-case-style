@@ -1,0 +1,50 @@
+name: Publish to npm
+
+on:
+    push: #todo: delete
+    release:
+        types: [published]
+    workflow_dispatch:
+
+jobs:
+    check-all:
+        name: check:all
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 20
+                  cache: "yarn"
+                  cache-dependency-path: yarn.lock
+
+            - name: yarn install
+              run: yarn install --immutable
+
+            - name: yarn check:all
+              run: yarn check:all
+
+    build:
+        name: build
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 20
+                  cache: "yarn"
+                  cache-dependency-path: yarn.lock
+
+            - name: yarn install
+              run: yarn install --immutable
+
+            - name: make dist
+              run: make dist
