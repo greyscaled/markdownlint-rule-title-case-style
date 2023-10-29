@@ -27,6 +27,7 @@ jobs:
             - run: make dist
             - name: smoke
               run: cd dist && ../node_modules/.bin/smoker
-            - run: npm publish
+            - name: npm publish
+              run: cd dist && npm publish
               # env:
               #   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
