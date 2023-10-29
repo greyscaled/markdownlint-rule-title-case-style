@@ -44,8 +44,7 @@ will require installing [`markdownlint` or related packages].
 
 ### `markdownlint-cli2`
 
-This plugin seems to work best with `.markdownlint-cli2.cjs` or
-`.markdownlint-cli2.mjs` extensions:
+Currently, only `.markdownlint-cli2.mjs` is officially supported:
 
 ```mjs
 // .markdownlint-cli2.mjs
