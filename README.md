@@ -1,11 +1,11 @@
 <!-- markdownlint-disable no-inline-html -->
 <!-- markdownlint-disable first-line-h1 -->
-<div style="display: flex; justify-content: center; gap: 4px;">
+<div align="center">
   <a href="https://www.npmjs.com/package/markdownlint-rule-title-case-style">
     <img alt="Static Badge (npm)" src="https://img.shields.io/badge/npm_install-fefefe?logo=npm">
   </a>
   <a href="https://github.com/greyscaled/markdownlint-rule-title-case-style/releases">
-    <img alt="Static Badge (latest release)" src="https://img.shields.io/github/v/release/greyscaled/markdownlint-rule-title-case-style?display_name=tag&style=flat-square">
+    <img alt="Static Badge (latest release)" src="https://img.shields.io/github/v/release/greyscaled/markdownlint-rule-title-case-style?display_name=tag">
     </img>
   </a>
 </div>
