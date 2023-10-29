@@ -14,7 +14,9 @@
         "name": "Grey Barkans",
         "url": "https://github.com/greyscaled"
     },
-    "repository": "github:greyscaled/markdownlint-rule-title-case-style",
+    "repository": {
+        "url": "git+https://github.com/greyscaled/markdownlint-rule-title-case-style.git"
+    },
     "type": "module",
     "exports": "./rule.js",
     "scripts": {
