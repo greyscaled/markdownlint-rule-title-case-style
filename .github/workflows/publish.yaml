@@ -21,15 +21,12 @@ jobs:
                   node-version: 20
                   cache: "yarn"
                   cache-dependency-path: yarn.lock
-
-            - name: yarn install
-              run: yarn install --immutable
-
-            - name: yarn check:all
-              run: yarn check:all
-
-            - name: make dist
-              run: make dist
-
+                  registry-url: "https://registry.npmjs.org"
+            - run: yarn install
+            - run: yarn check:all
+            - run: make dist
             - name: smoke
-              run: cd dist && ../node_modules/.bin/smoke
+              run: cd dist && ../node_modules/.bin/smoker
+            - run: npm publish
+              # env:
+              #   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
