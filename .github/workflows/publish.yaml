@@ -30,3 +30,6 @@ jobs:
 
             - name: make dist
               run: make dist
+
+            - name: smoke
+              run: cd dist && ../node_modules/.bin/smoke
