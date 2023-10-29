@@ -57,4 +57,6 @@ fi
 yarn check:all
 make dist
 cd dist || exit 1
+# run smoke test from inside 'dist' dir
+../node_modules/.bin/smoker
 npm publish

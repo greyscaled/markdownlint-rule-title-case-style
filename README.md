@@ -1,43 +1,35 @@
 # `markdownlint-rule-title-case-style`
 
-This rule ensures that Markdown headings use a consistent [Letter case] style.
-Currently supported cases are:
+`markdownlint` custom rule for consistent [Letter case] style in headings.
+Supported cases:
 
 - sentence (default)
-- title (via [`title-case`](https://www.npmjs.com/package/title-case))
+- title (using [`title-case`](https://www.npmjs.com/package/title-case))
 
 ## Scope
 
-This plugin attempts to minimize its scope and defer to existing rules. See all
-[existing rules], and in particular:
+This rule is limited in scope to just letter casing. There are many [existing
+rules] in the native `markdownlint` ecosystem that lint headings. Particular
+rules of interest:
 
 - [no-trailing-spaces]
 
-  `title-case-style` assumes headings do not have trailing spaces.
-
 - [no-trailing-punctuation]
 
-  `title-case-style` can handle ending punctuation. If there is more than one
-  sentence, each is processed. For example, the following is valid sentence
-  case:
-
-  ```md
-  # Sentence one. Sentence two
-  ```
+  > **info** `title-case-style` can handle headings that have more than one
+  > sentence or end punctuation.
 
 - [no-inline-html]
 
-  > **important**: This rule does not properly parse inline html in headings
-
-  By default, `no-inline-html` has no allowed elements. This rule currently
-  assumes the default.
+  > **important**: This rule does not properly parse inline html By default,
+  > `no-inline-html` has no allowed elements
 
 - [proper-names]
 
-  `proper-names` is _extremely_ handy, as it can find mistakes like "Javascript"
-  anywhere in the document, and correct it to "JavaScript". Unfortunately,
-  `title-case-style` doesn't have access to the configuration for
-  `proper-names`. You may need to copy a subset of them to `ignore`.
+  `proper-names` is great for applying mistakes to proper nouns like
+  `"JavaScript"`. `title-case-style` **does not** have access to the
+  configuration for `proper-names`. You can copy them to `title-case-style`'s
+  `ignore` config.
 
 ## Install
 
@@ -45,67 +37,45 @@ This plugin attempts to minimize its scope and defer to existing rules. See all
 yarn add -D markdownlint-rule-title-case-style
 ```
 
-```shell
-npm --save-dev markdownlint-rule-title-case-style
-```
-
-This package is a peer/plugin to the `markdownlint` ecosystem and most cases
-will require installing [`markdownlint` or related packages], depending on your
-use case.
+This package is a custom rule for the `markdownlint` ecosystem and most cases
+will require installing [`markdownlint` or related packages].
 
 ## Usage
 
-### Add the rule
+### `markdownlint-cli2`
 
-> It is recommended to use `markdownlint-cli2`, as it is written and actively
-> maintained by the maintainer of `markdownlint`.
+This plugin seems to work best with `.markdownlint-cli2.cjs` or
+`.markdownlint-cli2.mjs` extensions:
 
-#### `markdownlint-cli2``
-
-Add one of the [supported configuration formats], for example
-`.markdownlint-cli2.jsonc`:
-
-```jsonc
-{
-  "config": {
-    "title-case-style": {
-      "case": "sentence", // or "title"
-      "ignore": ["JavaScript"]
-    }
-  },
-  "customRules": ["markdownlint-rule-title-case-style"]
-}
-```
-
-#### Node
-
-```ts
+```mjs
+// .markdownlint-cli2.mjs
 import titleCaseStyle from "markdownlint-rule-title-case-style"
 
-markdownlint.sync({
+export default {
   customRules: [titleCaseStyle],
   config: {
     "title-case-style": {
-      case: "sentence", // or "title"
+      // letter case style to apply
+      //
+      // "sentence" or "title" (default: sentence)
+      case: "sentence",
+      // words to ignore when applying letter case.
+      //
+      // string[] (default: [])
       ignore: ["JavaScript"],
     },
+
+    // ... other markdownlint configurations
   },
-})
+}
 ```
 
-### Fix
-
-This rule can automatically fix violations. For example with
-`markdownlint-cli-2`:
-
-```shell
-markdownlint-cli2-fix
-```
+To automatically fix errors run `markdownlint-cli2 --fix`.
 
 ### Ignoring errors
 
-If there's a bug/incorrect report, or a case that shouldn't be enforced, simply
-wrap the lines as follows:
+If there's a bug, or a case that shouldn't be enforced, simply wrap the lines as
+follows:
 
 ```text
 <!-- markdownlint-disable title-case-style -->
@@ -132,7 +102,5 @@ For more information see [CONTRIBUTING].
   https://github.com/DavidAnson/markdownlint/blob/main/doc/md044.md
 [`markdownlint` or related packages]:
   https://github.com/DavidAnson/markdownlint#related
-[supported configuration formats]:
-  https://github.com/DavidAnson/markdownlint-cli2#configuration
 [CONTRIBUTING]:
   https://github.com/greyscaled/markdownlint-rule-title-case-style/blob/main/.github/CONTRIBUTING.md
