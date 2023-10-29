@@ -1,0 +1,32 @@
+name: Publish to npm
+
+on:
+    release:
+        types: [published]
+    workflow_dispatch:
+
+jobs:
+    publish:
+        name: publish
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 20
+                  cache: "yarn"
+                  cache-dependency-path: yarn.lock
+                  registry-url: "https://registry.npmjs.org"
+            - run: yarn install
+            - run: yarn check:all
+            - run: make dist
+            - name: smoke
+              run: cd dist && ../node_modules/.bin/smoker
+            - name: npm publish
+              run: cd dist && npm publish
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
