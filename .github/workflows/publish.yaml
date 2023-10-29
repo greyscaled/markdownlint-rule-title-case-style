@@ -1,7 +1,6 @@
 name: Publish to npm
 
 on:
-    push: #todo: delete
     release:
         types: [published]
     workflow_dispatch:
@@ -29,5 +28,5 @@ jobs:
               run: cd dist && ../node_modules/.bin/smoker
             - name: npm publish
               run: cd dist && npm publish
-              # env:
-              #   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
