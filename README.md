@@ -1,6 +1,6 @@
 <!-- markdownlint-disable no-inline-html -->
 <!-- markdownlint-disable first-line-h1 -->
-<div align="center">
+<div style="display: flex; justify-content: center; gap: 4px;">
   <a href="https://www.npmjs.com/package/markdownlint-rule-title-case-style">
     <img alt="Static Badge (npm)" src="https://img.shields.io/badge/npm_install-fefefe?logo=npm">
   </a>
