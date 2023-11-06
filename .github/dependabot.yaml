@@ -12,6 +12,10 @@ updates:
     # Maintain dependencies for Yarn (npm)
     - package-ecosystem: "npm"
       directory: "/"
+      groups:
+          fe-deps:
+              patterns:
+                  - "*"
       schedule:
           interval: "weekly"
       reviewers:
