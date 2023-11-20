@@ -3553,6 +3553,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"markdown-it@npm:13.0.2":
+  version: 13.0.2
+  resolution: "markdown-it@npm:13.0.2"
+  dependencies:
+    argparse: "npm:^2.0.1"
+    entities: "npm:~3.0.1"
+    linkify-it: "npm:^4.0.1"
+    mdurl: "npm:^1.0.1"
+    uc.micro: "npm:^1.0.5"
+  bin:
+    markdown-it: bin/markdown-it.js
+  checksum: 4fe0c41bc4c318c2901dc2923470c259cab137a4ab870001038877b942c9cc65072923e2d957f785de69a9da27c55657bd531607ccfd258246bd72a8deb8c2ee
+  languageName: node
+  linkType: hard
+
 "markdownlint-cli2-formatter-default@npm:0.0.4":
   version: 0.0.4
   resolution: "markdownlint-cli2-formatter-default@npm:0.0.4"
@@ -3597,7 +3612,7 @@ __metadata:
     eslint: "npm:^8.53.0"
     eslint-plugin-perfectionist: "npm:^2.2.0"
     jest: "npm:^29.7.0"
-    markdownlint: "npm:^0.31.1"
+    markdownlint: "npm:^0.32.1"
     markdownlint-cli2: "npm:^0.10.0"
     midnight-smoker: "npm:^7.0.4"
     prettier: "npm:^3.0.3"
@@ -3607,13 +3622,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"markdownlint@npm:0.31.1, markdownlint@npm:^0.31.1":
+"markdownlint@npm:0.31.1":
   version: 0.31.1
   resolution: "markdownlint@npm:0.31.1"
   dependencies:
     markdown-it: "npm:13.0.1"
     markdownlint-micromark: "npm:0.1.7"
   checksum: ac032bcbe290217b44e5a98a629737b505fb148bbaf7fc74570d9e713837f003b6b7d8dc49aa1e049142c43266ea92461f332da61429afa86f123a00ffc891cc
+  languageName: node
+  linkType: hard
+
+"markdownlint@npm:^0.32.1":
+  version: 0.32.1
+  resolution: "markdownlint@npm:0.32.1"
+  dependencies:
+    markdown-it: "npm:13.0.2"
+    markdownlint-micromark: "npm:0.1.7"
+  checksum: be2fbb409daaab8916deefafcc4d4d1a3e7dad6d602c03f4bd14cfb762b41de335da181bae11340a1db57b74844cfbb3bcafe05d92a69c5f809b689d8c1bd4b2
   languageName: node
   linkType: hard
 
